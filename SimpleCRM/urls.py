@@ -17,12 +17,13 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
 
-import mycrm.views as mycrm
+import mycrm.views
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url('^', mycrm.index_page)
+    url('^$', mycrm.views.index_page),
+    url('^mycrm/', include('mycrm.urls'))
 ]
 
 if settings.DEBUG:
