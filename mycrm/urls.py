@@ -8,6 +8,6 @@ urlpatterns=[
     url(r'^$', views.index_page, name="index_page_show"),
     url(r'^test_page/$', views.test_page, name="tst"),
     url(r'^user/$', views.user_page, name="user"),
-    url(r'^company/$', views.company_page, name="company"),
+    url(r'^company/$', views.CompaniesListView.as_view(), name="company"),
 ]
 
