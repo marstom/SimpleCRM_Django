@@ -1,7 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 import mycrm.models as models
+import mycrm.forms as forms
+
+from django.contrib.auth.forms import UserCreationForm
 
 #authenticate user
 from django.contrib.auth.models import User
@@ -16,14 +19,6 @@ def test_page(request):
 
 @login_required
 def index_page(request):
-    # username = request.POST['admin']
-    # password = request.POST['qwerty12345']
-    # username = 'admin'
-    # password = 'qwerty12345'
-    # user = authenticate(request, username=username, password=password)
-    # if user is not None:
-    #      login(request, user)
-
     return render(request, 'index.html', {})
 
 @login_required
@@ -34,8 +29,6 @@ def logout_crm(request):
 def user_page(request):
     return render(request, 'user.html', {})
 
-# def company_page(request):
-#     return render(request, 'company.html', {})
 
 class CompaniesListView(ListView):
     model = models.Company
@@ -54,3 +47,15 @@ class CompanyDetailView(DetailView): #todo add special regex for it
     Show employer Business_card
     '''
 #   pass
+
+class AddUser(CreateView):
+    form_class = UserCreationForm
+    model = User
+    template_name = 'company/add_company.html'
+
+class RegisterUser(CreateView):
+    form_class = UserCreationForm
+    model = User
+    template_name = 'register_user.html'
+
+    success_url = "/"

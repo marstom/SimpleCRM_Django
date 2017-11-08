@@ -4,10 +4,10 @@
 {% block sidebar_content %}
 <ul class="nav nav-pills flex-column">
     <li class="nav-item">
-      <a class="nav-link active" href="#">Users</a>
+      <a class="nav-link" href="#">Users</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'mycrm:registeruser' %}">Register new user</a>
+      <a class="nav-link active" href="{% url 'mycrm:registeruser' %}">Register new user</a>
     </li>
     <li class="nav-item">
       <a class="nav-link " href="#">Download users list</a>
@@ -21,6 +21,13 @@
 
 {% block content %}
 
-<p>Users page</p>
+<p>Add user form</p>
+
+<form action="/mycrm/user/register" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
+
 
 {% endblock %}
