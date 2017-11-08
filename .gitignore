@@ -3,4 +3,3 @@ __pycache__/
 migrations/
 bootstrap-4.0.0-beta.2/
 *.pyc
-*.sqlite3

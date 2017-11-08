@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
+#import django.contrib.auth.urls
 
 import mycrm.views
 
@@ -23,7 +24,8 @@ import mycrm.views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url('^$', mycrm.views.index_page),
-    url('^mycrm/', include('mycrm.urls'))
+    url('^mycrm/', include('mycrm.urls')),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
 ]
 
 if settings.DEBUG:
