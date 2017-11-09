@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block sidebar_content %}
+{% include '_companies_bar.html' %}
+{% endblock %}
+
+{% block content %}
+
+<h1>Detailed view</h1>
+
+{{company}}
+{{company.cards.name}}
+{{company.cards}}
+
+
+{% endblock %}

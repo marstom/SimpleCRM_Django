@@ -5,6 +5,7 @@ from django.db import models
 class Company(models.Model):
     name = models.CharField(max_length=128)
     ranking_position = models.IntegerField(default=0)
+    # worker = models.ManyToManyField('self', through='CompanyEmployerBusinessCard', symmetrical=False)
 
     class Meta:
         verbose_name = 'Company'
@@ -13,11 +14,13 @@ class Company(models.Model):
     def __str__(self):
         return self.name
 
+
+#example filter models.Company.objects.filter(card__name='Marcin').all()
 class CompanyEmployerBusinessCard(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=35)
     surname = models.CharField(max_length=30)
     phone = models.CharField(max_length=30)
-    company = models.ForeignKey(Company)
+    company = models.ForeignKey(Company, related_name='cards', related_query_name='card')
 
     class Meta:
         verbose_name = 'Employer'

@@ -1,21 +1,8 @@
 {% extends 'base.html' %}
-
+{% load crispy_forms_tags %}
 
 {% block sidebar_content %}
-<ul class="nav nav-pills flex-column">
-    <li class="nav-item">
-      <a class="nav-link" href="#">Users</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" href="{% url 'mycrm:registeruser' %}">Register new user</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link " href="#">Download users list</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Export</a>
-    </li>
- </ul>
+{% include '_users_bar.html' %}
 {% endblock %}
 
 
@@ -25,7 +12,7 @@
 
 <form action="/mycrm/user/register" method="post">
     {% csrf_token %}
-    {{ form }}
+    {{ form|crispy }}
     <input type="submit" value="Submit" />
 </form>
 

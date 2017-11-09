@@ -1,14 +1,26 @@
 from django import forms
-from mycrm.models import Company
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+from mycrm.models import Company, CompanyEmployerBusinessCard
 from django.contrib.auth import get_user_model
 
 
-class CompaniesForm(forms.ModelForm):
+class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company
         fields=['name']
 
-# class AddUserForm(forms.ModelForm):
-#     class Meta:
-#         model = get_user_model()
-#         fields=['username']
+
+class SignUpForm(UserCreationForm):
+    first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+    last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+    email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
+
+class BusinessCardForm(forms.ModelForm):
+    class Meta:
+        model = CompanyEmployerBusinessCard
+        fields=['name', 'surname', 'phone', 'company']

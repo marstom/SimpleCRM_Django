@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block sidebar_content %}
+{% include '_companies_bar.html' %}
+{% endblock %}
+
+{% block content %}
+
+<h1>Companies page</h1>
+
+{% for company in object_list %}
+<li>{{ company.id }} <a href="{% url 'mycrm:detail' company.id %}">{{ company.name }}</a> rank = {{company.ranking_position}} {{company.card}}</li>
+{% endfor %}
+
+
+{% endblock %}
