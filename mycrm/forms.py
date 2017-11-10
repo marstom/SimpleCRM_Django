@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from mycrm.models import Company, CompanyEmployerBusinessCard
+from mycrm.models import Company, BusinessCard
 from django.contrib.auth import get_user_model
 
 
@@ -22,5 +22,5 @@ class SignUpForm(UserCreationForm):
 
 class BusinessCardForm(forms.ModelForm):
     class Meta:
-        model = CompanyEmployerBusinessCard
-        fields=['name', 'surname', 'phone', 'company']
+        model = BusinessCard
+        fields=['name', 'last_name', 'phone', 'company']

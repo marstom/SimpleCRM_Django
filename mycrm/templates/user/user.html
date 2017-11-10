@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block sidebar_content %}
+{% include '_users_bar.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+<p>Registred users</p>
+
+    {% for user in users %}
+        <p>{{ user }} {{ user.last_name }} {{ user.email }} <a href="#">Edit</a></p>
+    {% endfor %}
+{% endblock %}

@@ -17,18 +17,22 @@ session = SessionStore()
 def test_page(request):
     return render(request, 'test_test_page.html', {'a':23, 'b':[1,4,3,4,5,'napis','kartówka']})
 
-@login_required
+#@login_required
 def index_page(request):
     return render(request, 'index.html', {})
 
-@login_required
+#@login_required
 def logout_crm(request):
     logout(request)
 
-@login_required
+#@login_required
 def user_page(request):
     return render(request, 'user/user.html', {})
 
+class UsersList(ListView):
+    template_name = 'user/user.html'
+    context_object_name = 'users'
+    model = User
 
 class CompaniesListView(ListView):
     template_name = 'company/company.html'
@@ -41,10 +45,10 @@ class CompanyEmployerBusinessCardList(ListView):
     template_name = 'company/company_business_card.html'
 
     def get_queryset(self):
-        return models.CompanyEmployerBusinessCard.objects.all()
+        return models.BusinessCard.objects.all()
 
 class CompanyDetailView(DetailView): #todo add special regex for it
-    model = models.Company #hmm company or business card?
+    model = models.Company
     template_name = 'company/company_detail.html'
 
 

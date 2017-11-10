@@ -6,11 +6,21 @@
 
 {% block content %}
 
-<h1>Detailed view</h1>
+<h1>{{company}}</h1>
 
-{{company}}
-{{company.cards.name}}
-{{company.cards}}
+<img height="120" width="120" src="{{company.picture}}"/>
 
+<p>{{company}}</p>
+<p>{{company.description}}</p>
+<p>{{company.ranking_position}}</p>
+<p>Number of employes: {{ company.businesscard_set.count }}</p>
+
+{% for card in company.businesscard_set.all %}
+
+    <li>{{ card }}
+    {{ card.last_name }}</li>
+    <i class="fa fa-phone" aria-hidden="true"></i>
+    {{ card.phone }}
+{% endfor %}
 
 {% endblock %}
