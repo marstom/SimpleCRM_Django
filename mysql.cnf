@@ -1,0 +1,8 @@
+# my.cnf
+[client]
+database="mycrm"
+user="tomek"
+password="kH9bya8MREXDp9rt"
+host="localhost"
+port=3306
+default-character-set=utf8
