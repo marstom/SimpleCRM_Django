@@ -2,18 +2,17 @@
 {% load crispy_forms_tags %}
 
 {% block sidebar_content %}
-{% include '_users_bar.html' %}
+{% include '_companies_bar.html' %}
 {% endblock %}
-
 
 {% block content %}
 
-<p>Add user form</p>
+<h1>Edit contact</h1>
 
-<form action="/mycrm/user/register" method="post">
+<form method="post" action="">
     {% csrf_token %}
     {{ form|crispy }}
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Save" />
 </form>
 
 

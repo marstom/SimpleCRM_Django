@@ -15,7 +15,7 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link " href="{% url 'mycrm:order_add' %}">
+      <a class="nav-link {% if request.resolver_match.url_name == "order_add" %} active {% endif %}" href="{% url 'mycrm:order_add' %}">
           Add new order
       </a>
     </li>

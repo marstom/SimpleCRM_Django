@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles%}
 
 {% block sidebar_content %}
     {% include '_companies_bar.html' %}
@@ -15,6 +16,8 @@
             <p class="lead">Number of employes: {{ company.businesscard_set.count }}</p>
         </div>
     </div>
+
+    <img src="{% static 'img/ok.png' %}"/>
 
 
     <!-- Contact list -->
@@ -44,7 +47,9 @@
                         {% for card in company.businesscard_set.all %}
                             <tr class="active">
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ card.name }} {{ card.last_name }} </td>
+                                <td><a class="btn btn-light" href="{% url 'mycrm:edit_contact' company.pk %}"><i class="fa fa-address-card-o" aria-hidden="true"></i></a>
+                                    <a class="btn btn-primary" href="{% url 'mycrm:delete_contact' company.pk %}" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                    {{ card.name }} {{ card.last_name }} </td>
                                 <td>{{ card.phone }}</td>
                             </tr>
                         {% endfor %}
@@ -83,12 +88,28 @@
                         {% for order in company.order_set.all %}
                             <tr class="active">
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ order.name }} </td>
+                                <td>
+                                    <a class="btn btn-primary" href="{% url 'mycrm:order_edit' company.pk %}" role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    {{ order.name }}
+                                </td>
                                 <td>{{ order.description }}</td>
                                 <td>{{ order.value }}</td>
-                                <td>{{ order.payment_status }}</td>
+                                <td>
+                                    {% if order.payment_status %}
+                                        <img src="{% static 'img/ok.png' %}"/>
+                                    {% else %}
+                                        <img src="{% static 'img/nok.png' %}"/>
+                                    {% endif %}
+                                </td>
                                 <td>{{ order.date_created }}</td>
-                                <td>{{ order.project_is_finished }}</td>
+                                <td>
+                                    {% if order.project_is_finished %}
+                                        <img src="{% static 'img/ok.png' %}"/>
+                                    {% else %}
+                                        <img src="{% static 'img/nok.png' %}"/>
+                                    {% endif %}
+
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

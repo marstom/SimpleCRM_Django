@@ -43,14 +43,17 @@ class CompaniesListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(CompaniesListView, self).get_context_data(**kwargs)
-        context['tomek']= 0
-        context['count']=0
-        print(kwargs)
+        context['tomek']= 'przyklad'
         return context
 
-    # def get_queryset(self): # for filtering
-    #     qs= super().get_queryset()
-    #     return qs.filter(name__startswith='co')
+    def get_queryset(self): # for filtering
+        qs= super().get_queryset()
+        print(self.request.GET.get('q'))
+        var = self.request.GET.get('q')
+        if var:
+            return qs.filter(name__startswith=var)
+        return qs
+
 
 class CompanyUpdate(UpdateView):
     form_class = forms.CompanyForm
@@ -84,15 +87,29 @@ class RegisterUser(CreateView):
     # form_class = UserCreationForm
     form_class = forms.SignUpForm
     model = User #user from django
-    template_name = 'register_user.html'
-    success_url = "/"
+    template_name = 'user/register_user.html'
+    success_url = reverse_lazy('mycrm:index')
 
 class ContactAdd(CreateView):
     form_class = forms.ContactAddForm
     template_name = 'mycrm/contact_form.html'
     success_url = reverse_lazy('mycrm:company')
 
+class ContactEdit(UpdateView):
+    form_class = forms.ContactAddForm
+    model = models.BusinessCard
+    success_url = reverse_lazy('mycrm:company')
+
+class ContactDelete(DeleteView):
+    model = models.BusinessCard
+    success_url = reverse_lazy('mycrm:company')
+
 class OrderAdd(CreateView):
     form_class = forms.OrderAddForm
     template_name = 'mycrm/order_form.html'
+    success_url = reverse_lazy('mycrm:company')
+
+class OrderEdit(UpdateView):
+    form_class = forms.OrderAddForm
+    model = models.Order
     success_url = reverse_lazy('mycrm:company')
