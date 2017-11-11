@@ -38,6 +38,11 @@ class Order(models.Model):
     project_is_finished = models.BooleanField(default=False) #tells if project is finished
     company = models.ForeignKey(Company) #for who we make project
 
+    @property
+    def sum_quantity(self):
+        total=sum([obj.value for obj in Order.objects.filter(company=self.company.pk)])
+        return total
+
     class Meta:
         verbose_name = 'Order'
         verbose_name_plural = 'Orders'

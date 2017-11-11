@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.backends.db import SessionStore
+from django.db.models import Sum, Count
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView
 import mycrm.models as models
@@ -35,10 +36,19 @@ class UsersList(ListView):
     model = User
 
 class CompaniesListView(ListView):
+    model = models.Company
     template_name = 'company/company.html'
 
-    def get_queryset(self):
-        return models.Company.objects.all()
+    def get_context_data(self, **kwargs):
+        context = super(CompaniesListView, self).get_context_data(**kwargs)
+        context['tomek']= 0
+        context['count']=0
+        print(kwargs)
+        return context
+
+    # def get_queryset(self): # for filtering
+    #     qs= super().get_queryset()
+    #     return qs.filter(name__startswith='co')
 
 
 class CompanyEmployerBusinessCardList(ListView):
