@@ -1,8 +1,8 @@
 # my.cnf
 [client]
-database="mycrm"
-user="tomek"
-password="kH9bya8MREXDp9rt"
-host="localhost"
+database="marstom$mycrm"
+user="marstom"
+password="tyr32y0hfasoHUOI"
+host="marstom.mysql.pythonanywhere-services.com"
 port=3306
 default-character-set=utf8

@@ -25,7 +25,7 @@ SECRET_KEY = '0g51-soryk$47_+-n5^jyta0)2$&$eq$$dssh_@s-i8$@#l=a+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['marstom.pythonanywhere.com']
 INTERNAL_IPS = ('127.0.0.1',)
 
 # Application definition
