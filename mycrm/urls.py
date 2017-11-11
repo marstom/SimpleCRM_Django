@@ -15,5 +15,14 @@ urlpatterns=[
     url(r'^company/$', views.CompaniesListView.as_view(), name="company"),
     url(r'^company/add$', views.CompanyAdd.as_view(), name="company_add"),
     url(r'^company/(?P<pk>[0-9]+)/$', views.CompanyDetailView.as_view(), name="detail"),
+    url(r'^company/(?P<pk>[0-9]+)/edit/$', views.CompanyUpdate.as_view(), name="company_edit"),
+    url(r'^company/(?P<pk>[0-9]+)/delete/$', views.CompanyDelete.as_view(), name="company_delete"),
+    url(r'^company/addcontact', views.ContactAdd.as_view(), name="contact_add"),
+    url(r'^company/addorder', views.OrderAdd.as_view(), name="order_add"),
 ]
 
+
+'''
+contact_add
+order_add
+'''

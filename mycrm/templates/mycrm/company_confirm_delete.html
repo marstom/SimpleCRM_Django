@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block sidebar_content %}
+{% include '_companies_bar.html' %}
+{% endblock %}
+
+{% block content %}
+
+<h1>Delete company, are you sure???</h1>
+<h2>Warning! You loose all data and all related projects</h2>
+
+    <form action="" method="post">{% csrf_token %}
+        <p>Are you sure you want to delete "{{ object }}"?</p>
+        <input type="submit" value="Confirm" />
+    </form>
+
+{% endblock %}

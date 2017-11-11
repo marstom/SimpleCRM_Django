@@ -2,7 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.backends.db import SessionStore
 from django.db.models import Sum, Count
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic.edit import UpdateView, DeleteView
 import mycrm.models as models
 import mycrm.forms as forms
 
@@ -50,6 +52,14 @@ class CompaniesListView(ListView):
     #     qs= super().get_queryset()
     #     return qs.filter(name__startswith='co')
 
+class CompanyUpdate(UpdateView):
+    form_class = forms.CompanyForm
+    model = models.Company
+    success_url = reverse_lazy('mycrm:company')
+
+class CompanyDelete(DeleteView):
+    model = models.Company
+    success_url = reverse_lazy('mycrm:company')
 
 class CompanyEmployerBusinessCardList(ListView):
     template_name = 'company/company_business_card.html'
@@ -64,8 +74,9 @@ class CompanyDetailView(DetailView): #todo add special regex for it
 
 class CompanyAdd(CreateView):
     form_class = forms.CompanyForm
-    model = User
-    template_name = 'company/add_company.html'
+    # model = models
+    # template_name = 'company/add_company.html'
+    template_name = 'mycrm/company_form.html'
     success_url = '/'
 
 
@@ -75,3 +86,13 @@ class RegisterUser(CreateView):
     model = User #user from django
     template_name = 'register_user.html'
     success_url = "/"
+
+class ContactAdd(CreateView):
+    form_class = forms.ContactAddForm
+    template_name = 'mycrm/contact_form.html'
+    success_url = reverse_lazy('mycrm:company')
+
+class OrderAdd(CreateView):
+    form_class = forms.OrderAddForm
+    template_name = 'mycrm/order_form.html'
+    success_url = reverse_lazy('mycrm:company')
