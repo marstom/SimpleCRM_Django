@@ -10,14 +10,15 @@
         <div class="jumbotron container-fluid">
             <h1 class="display-2">{{ company }}</h1>
 
+            {% if company.picture != '' %}
             <img class="img-fluid rounded" alt="Responsive image" height="200" width="200" src="{{ company.picture }}"/>
-
+            {% else %}
+                <img class="img-fluid rounded" alt="Responsive image" height="200" width="200" src="{% static 'img/no_image.png' %}"/>
+            {% endif %}
             <p class="lead">{{ company.description }}</p>
             <p class="lead">Number of employes: {{ company.businesscard_set.count }}</p>
         </div>
     </div>
-
-    <img src="{% static 'img/ok.png' %}"/>
 
 
     <!-- Contact list -->

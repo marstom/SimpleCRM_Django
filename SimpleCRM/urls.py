@@ -23,7 +23,7 @@ import mycrm.views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url('^$', mycrm.views.index_page),
+    url('^$', mycrm.views.UsersList.as_view()),
     url('^mycrm/', include('mycrm.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')),
 ]

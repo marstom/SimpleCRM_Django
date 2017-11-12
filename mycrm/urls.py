@@ -7,7 +7,7 @@ from . import views
 app_name = 'mycrm'
 
 urlpatterns=[
-    url(r'^$', views.index_page, name="index_page_show"),
+    url(r'^$', views.UsersList.as_view(), name="index_page_show"),
     url(r'^test_page/$', views.test_page, name="tst"),
     url(r'^user/$', views.UsersList.as_view(), name="user"),
     url(r'^user/register$', views.RegisterUser.as_view(), name="registeruser"),

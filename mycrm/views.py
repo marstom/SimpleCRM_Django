@@ -110,7 +110,7 @@ class CompanyAdd(CreateView):
     # model = models
     # template_name = 'company/add_company.html'
     template_name = 'mycrm/company_form.html'
-    success_url = '/'
+    success_url = reverse_lazy('mycrm:company')
 
 
 class RegisterUser(CreateView):
