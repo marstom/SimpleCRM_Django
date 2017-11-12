@@ -22,7 +22,12 @@
         <tr>
           <th scope="row">{{ forloop.counter }}</th>
           <td>{{ company.name }}</td>
-          <td>{{ company.order_set.last.sum_quantity }} <i class="fa fa-eur" aria-hidden="true"></i></td>
+          <td>
+              {% if company.order_set.last.sum_quantity %}
+              {{ company.order_set.last.sum_quantity }}
+              {% else %}0.00
+              {% endif %}
+              <i class="fa fa-eur" aria-hidden="true"></i></td>
           <td>
               <a class="btn btn-light" href="{% url 'mycrm:detail' company.pk %}">Details <i class="fa fa-address-card-o" aria-hidden="true"></i></a>
               <!--<a class="btn btn-primary" href="{% url 'mycrm:detail' company.pk %}" role="button">Details</a> -->

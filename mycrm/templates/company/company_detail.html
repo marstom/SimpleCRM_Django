@@ -10,14 +10,15 @@
         <div class="jumbotron container-fluid">
             <h1 class="display-2">{{ company }}</h1>
 
+            {% if company.picture != '' %}
             <img class="img-fluid rounded" alt="Responsive image" height="200" width="200" src="{{ company.picture }}"/>
-
+            {% else %}
+                <img class="img-fluid rounded" alt="Responsive image" height="200" width="200" src="{% static 'img/no_image.png' %}"/>
+            {% endif %}
             <p class="lead">{{ company.description }}</p>
             <p class="lead">Number of employes: {{ company.businesscard_set.count }}</p>
         </div>
     </div>
-
-    <img src="{% static 'img/ok.png' %}"/>
 
 
     <!-- Contact list -->
@@ -47,8 +48,8 @@
                         {% for card in company.businesscard_set.all %}
                             <tr class="active">
                                 <td>{{ forloop.counter }}</td>
-                                <td><a class="btn btn-light" href="{% url 'mycrm:edit_contact' company.pk %}"><i class="fa fa-address-card-o" aria-hidden="true"></i></a>
-                                    <a class="btn btn-primary" href="{% url 'mycrm:delete_contact' company.pk %}" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                <td><a class="btn btn-light" href="{% url 'mycrm:edit_contact' card.pk %}"><i class="fa fa-address-card-o" aria-hidden="true"></i></a>
+                                    <a class="btn btn-primary" href="{% url 'mycrm:delete_contact' card.pk %}" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                     {{ card.name }} {{ card.last_name }} </td>
                                 <td>{{ card.phone }}</td>
                             </tr>
@@ -89,7 +90,7 @@
                             <tr class="active">
                                 <td>{{ forloop.counter }}</td>
                                 <td>
-                                    <a class="btn btn-primary" href="{% url 'mycrm:order_edit' company.pk %}" role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    <a class="btn btn-primary" href="{% url 'mycrm:order_edit' order.pk %}" role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                     {{ order.name }}
                                 </td>
                                 <td>{{ order.description }}</td>

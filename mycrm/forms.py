@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 
 
 class CompanyForm(forms.ModelForm):
+    picture = forms.CharField(required=False)
     class Meta:
         model = Company
         fields=['name', 'description', 'picture']
