@@ -1,5 +1,7 @@
 # README #
 
+# Simple CRM App in Django #
+
 ### Installation ###
 * create virtualenv:
 
