@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.backends.db import SessionStore
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, Count
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
@@ -24,18 +25,19 @@ from mycrm.my_utilities import queries
 session = SessionStore()
 # Create your views here.
 
+@login_required
 def test_page(request):
     return render(request, 'test_test_page.html', {'a':23, 'b':[1,4,3,4,5,'napis','kartówka']})
 
-#@login_required
+@login_required
 def index_page(request):
     return render(request, 'index.html', {})
 
-#@login_required
 def logout_crm(request):
     logout(request)
+    return render(request, 'logout.html')
 
-#@login_required
+@login_required
 def user_page(request):
     return render(request, 'user/user.html', {})
 
@@ -67,7 +69,7 @@ class UsersList(ListView):
     context_object_name = 'users'
     model = User
 
-class CompaniesListView(ListView):
+class CompaniesListView(LoginRequiredMixin, ListView):
     model = models.Company
     template_name = 'company/company.html'
 
@@ -85,27 +87,27 @@ class CompaniesListView(ListView):
         return qs
 
 
-class CompanyUpdate(UpdateView):
+class CompanyUpdate(LoginRequiredMixin, UpdateView):
     form_class = forms.CompanyForm
     model = models.Company
     success_url = reverse_lazy('mycrm:company')
 
-class CompanyDelete(DeleteView):
+class CompanyDelete(LoginRequiredMixin, DeleteView):
     model = models.Company
     success_url = reverse_lazy('mycrm:company')
 
-class CompanyEmployerBusinessCardList(ListView):
+class CompanyEmployerBusinessCardList(LoginRequiredMixin, ListView):
     template_name = 'company/company_business_card.html'
 
     def get_queryset(self):
         return models.BusinessCard.objects.all()
 
-class CompanyDetailView(DetailView): #todo add special regex for it
+class CompanyDetailView(LoginRequiredMixin, DetailView): #todo add special regex for it
     model = models.Company
     template_name = 'company/company_detail.html'
 
 
-class CompanyAdd(CreateView):
+class CompanyAdd(LoginRequiredMixin, CreateView):
     form_class = forms.CompanyForm
     # model = models
     # template_name = 'company/add_company.html'
@@ -120,12 +122,12 @@ class RegisterUser(CreateView):
     template_name = 'user/register_user.html'
     success_url = reverse_lazy('mycrm:user')
 
-class ContactAdd(CreateView):
+class ContactAdd(LoginRequiredMixin, CreateView):
     form_class = forms.ContactAddForm
     template_name = 'mycrm/contact_form.html'
     success_url = reverse_lazy('mycrm:company')
 
-class ContactEdit(UpdateView):
+class ContactEdit(LoginRequiredMixin, UpdateView):
     form_class = forms.ContactAddForm
     model = models.BusinessCard
     success_url = reverse_lazy('mycrm:company')
@@ -136,16 +138,16 @@ class ContactEdit(UpdateView):
     #     print(page)
     #     return reverse_lazy('mycrm:detail')
 
-class ContactDelete(DeleteView):
+class ContactDelete(LoginRequiredMixin, DeleteView):
     model = models.BusinessCard
     success_url = reverse_lazy('mycrm:company')
 
-class OrderAdd(CreateView):
+class OrderAdd(LoginRequiredMixin, CreateView):
     form_class = forms.OrderAddForm
     template_name = 'mycrm/order_form.html'
     success_url = reverse_lazy('mycrm:company')
 
-class OrderEdit(UpdateView):
+class OrderEdit(LoginRequiredMixin, UpdateView):
     form_class = forms.OrderAddForm
     model = models.Order
     success_url = reverse_lazy('mycrm:company')
