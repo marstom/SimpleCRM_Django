@@ -22,6 +22,7 @@ urlpatterns=[
     url(r'^company/(?P<pk>[0-9]+)/deletecontact', views.ContactDelete.as_view(), name="delete_contact"),
     url(r'^company/addorder', views.OrderAdd.as_view(), name="order_add"),
     url(r'^company/(?P<pk>[0-9]+)/orderedit', views.OrderEdit.as_view(), name="order_edit"),
+    url(r'^company/report$', views.company_report, name="company_report"),
 ]
 
 
