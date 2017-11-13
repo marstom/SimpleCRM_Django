@@ -41,12 +41,14 @@ def company_report(request):
     '''
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
-    p = canvas.Canvas(response)
+    p = canvas.Canvas(response, initialFontName='Times-Roman')
     lines = queries.get_companies_report_text()
-
+    
+    page_size = 35
+    space = 20
     for i,line in enumerate(lines):
-        p.drawString(50, 800-i*20, line)
-        if i+1 % 25 == 0:
+        p.drawString(50, 800-(i % page_size)*space, line)
+        if (i+1) % page_size == 0:
             p.showPage()
     p.save()
     return response
