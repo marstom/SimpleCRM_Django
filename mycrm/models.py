@@ -1,14 +1,11 @@
-from decimal import Decimal
 from django.db import models
 
-# Create your models here.
 
 class Company(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(max_length=2000)
     picture = models.CharField(max_length=500, null=True, default=None)
     ranking_position = models.IntegerField(default=0)
-    # worker = models.ManyToManyField('self', through='CompanyEmployerBusinessCard', symmetrical=False)
 
     class Meta:
         verbose_name = 'Company'
@@ -41,6 +38,9 @@ class Order(models.Model):
 
     @property
     def sum_quantity(self):
+        '''
+        calculate all bills sum
+        '''
         total=sum([obj.value for obj in Order.objects.filter(company=self.company.pk)])
         return total
 

@@ -1,7 +1,9 @@
-# README #
+# Simple CRM in Django #
+
+Simple app for customer and companies managment. Each user has privilige, admin can change user privilges. There are PDF reports.
 
 ### Installation ###
-* create virtualenv:
+* create and activate virtualenv:
 
 ```bash
 python3 -m venv ~/projekty/venv/CRM_Django
@@ -9,12 +11,7 @@ python3 -m venv ~/projekty/venv/CRM_Django
 ```
 
 * pip install --upgrade -r requirements.txt
-
-
-
-### Simple CRM in Django ###
-
-* create database
+* migrate database
 ```bash
 python manage.py makemigrations
 python manage.py migrate
@@ -25,7 +22,7 @@ python manage.py migrate
 ```bash
 python manage.py runserver
 ```
-
 * create superuser
-
+```bash
 python manage.py createsuperuser
+```
