@@ -14,6 +14,7 @@ from django.http import HttpResponse
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm, PasswordChangeForm #for user edit
 
 #authenticate user
 from django.contrib.auth import logout
@@ -59,6 +60,34 @@ class UsersList(ListView):
     context_object_name = 'users'
     model = User
 
+
+class RegisterUser(CreateView):
+    form_class = forms.SignUpForm
+    model = User #user from django
+    template_name = 'user/register_user.html'
+    success_url = reverse_lazy('mycrm:user')
+
+class UserEdit(UpdateView): #TODO make users editable
+    form_class = forms.EditUserForm
+    model = User
+    template_name = 'update_view.html'
+    success_url = reverse_lazy('mycrm:user')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['page_title'] = 'Edit User:'
+        return context
+
+class UserDelete(DeleteView):
+    model = User
+    template_name = 'update_view.html'
+    success_url = reverse_lazy('mycrm:user')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['page_title'] = 'Delete User:'
+        return context
+
 class CompaniesListView(LoginRequiredMixin, ListView):
     model = models.Company
     template_name = 'company/company.html'
@@ -102,13 +131,6 @@ class CompanyAdd(LoginRequiredMixin, CreateView):
     form_class = forms.CompanyForm
     template_name = 'mycrm/company_form.html'
     success_url = reverse_lazy('mycrm:company')
-
-
-class RegisterUser(CreateView):
-    form_class = forms.SignUpForm
-    model = User #user from django
-    template_name = 'user/register_user.html'
-    success_url = reverse_lazy('mycrm:user')
 
 
 class ContactAdd(LoginRequiredMixin, CreateView):

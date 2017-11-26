@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from mycrm.models import Company, BusinessCard, Order
 
@@ -18,6 +18,14 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
+
+class EditUserForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+    last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email')
+
 
 class ContactAddForm(forms.ModelForm):
     class Meta:
