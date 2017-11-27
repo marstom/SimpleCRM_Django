@@ -60,11 +60,22 @@ class UpdateViewWithMessage(UpdateView):
         messages.success(self.request, self.my_message)
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        #using for create universal template for update views
+        context = super().get_context_data()
+        context['page_title'] = self.page_title
+        return context
+
 class DeleteViewWithMessage(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.my_message)
         return super().delete(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['page_title'] = self.page_title
+        context['page_text'] = '{} {}?'.format(self.page_text, context['object'])
+        return context
 
 class UsersList(ListView):
     template_name = 'user/user.html'
@@ -78,29 +89,23 @@ class RegisterUser(CreateView):
     template_name = 'user/register_user.html'
     success_url = reverse_lazy('mycrm:user')
 
-class UserEdit(UpdateViewWithMessage): #TODO make users editable
+class UserEdit(UpdateViewWithMessage):
     form_class = forms.EditUserForm
     model = User
     template_name = 'update_view.html'
     success_url = reverse_lazy('mycrm:user')
     my_message = 'Update user succesfully'
+    page_title = 'Edit User:'
 
-    def get_context_data(self, **kwargs):
-        #using for create universal template for update views
-        context = super().get_context_data()
-        context['page_title'] = 'Edit User:'
-        return context
 
 class UserDelete(DeleteViewWithMessage):
     model = User
-    template_name = 'update_view.html'
+    template_name = 'delete_view.html'
     success_url = reverse_lazy('mycrm:user')
     my_message = 'You delete user succesfully!'
+    page_title = 'Delete user'
+    page_text = 'Are you sure delete user?'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context['page_title'] = 'Delete User:'
-        return context
 
 
 class CompaniesListView(LoginRequiredMixin, ListView):
@@ -124,14 +129,19 @@ class CompanyUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithM
     permission_required = 'mycrm.change_company'
     form_class = forms.CompanyForm
     model = models.Company
+    template_name = 'update_view.html'
     success_url = reverse_lazy('mycrm:company')
     my_message = 'You change company data succesfully!'
+    page_title = 'Edit company:'
 
 
 class CompanyDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMessage):
     permission_required = 'mycrm.delete_company'
     model = models.Company
     success_url = reverse_lazy('mycrm:company')
+    template_name = 'delete_view.html'
+    page_title = 'Delete company'
+    page_text = 'Are you sure you want delete company:'
     my_message = 'You delete company succesfully!'
 
 
@@ -161,13 +171,19 @@ class ContactAdd(LoginRequiredMixin, CreateView):
 class ContactEdit(LoginRequiredMixin, UpdateViewWithMessage):
     form_class = forms.ContactAddForm
     model = models.BusinessCard
+    template_name = 'update_view.html'
     success_url = reverse_lazy('mycrm:company')
     my_message = 'You update contact succesfully!'
+    page_title = 'Edit contact:'
 
 
 class ContactDelete(LoginRequiredMixin, DeleteViewWithMessage):
     model = models.BusinessCard
     success_url = reverse_lazy('mycrm:company')
+    my_message = 'You delete contact succesfully!'
+    template_name = 'delete_view.html'
+    page_title = 'Delete contact'
+    page_text = 'Are you sure you want delete contact:'
     my_message = 'You delete contact succesfully!'
 
 
@@ -182,5 +198,7 @@ class OrderEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessa
     permission_required = 'mycrm.change_order'
     form_class = forms.OrderAddForm
     model = models.Order
+    template_name = 'update_view.html'
     success_url = reverse_lazy('mycrm:company')
     my_message = 'You update order succesfully!'
+    page_title = 'Edit order:'
