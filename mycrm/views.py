@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -72,6 +73,11 @@ class UserEdit(UpdateView): #TODO make users editable
     model = User
     template_name = 'update_view.html'
     success_url = reverse_lazy('mycrm:user')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'You change user succesfully!')
+
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()

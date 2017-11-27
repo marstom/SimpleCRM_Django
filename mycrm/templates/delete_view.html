@@ -14,11 +14,11 @@
 </style>
     <h1>{{ page_title }}</h1>
 
+    <p>{{ page_text }}</p>
 
             <form method="post" action="" id="id-exampleForm">
                 {% csrf_token %}
-                {{ form|crispy }}
-                <input type="submit" value="Save" class="btn btn-primary"/>
+                <input type="submit" value="Delete" class="btn btn-primary"/>
             </form>
 
 
