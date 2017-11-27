@@ -55,6 +55,16 @@ def company_report(request):
     p.save()
     return response
 
+class UpdateViewWithMessage(UpdateView):
+    def form_valid(self, form):
+        messages.success(self.request, self.my_message)
+        return super().form_valid(form)
+
+class DeleteViewWithMessage(DeleteView):
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.my_message)
+        return super().delete(request, *args, **kwargs)
+
 
 class UsersList(ListView):
     template_name = 'user/user.html'
@@ -68,15 +78,12 @@ class RegisterUser(CreateView):
     template_name = 'user/register_user.html'
     success_url = reverse_lazy('mycrm:user')
 
-class UserEdit(UpdateView): #TODO make users editable
+class UserEdit(UpdateViewWithMessage): #TODO make users editable
     form_class = forms.EditUserForm
     model = User
     template_name = 'update_view.html'
     success_url = reverse_lazy('mycrm:user')
-
-    def form_valid(self, form):
-        messages.success(self.request, 'You change user succesfully!')
-        return super().form_valid(form)
+    my_message = 'Update user succesfully'
 
     def get_context_data(self, **kwargs):
         #using for create universal template for update views
@@ -84,19 +91,16 @@ class UserEdit(UpdateView): #TODO make users editable
         context['page_title'] = 'Edit User:'
         return context
 
-class UserDelete(DeleteView):
+class UserDelete(DeleteViewWithMessage):
     model = User
     template_name = 'update_view.html'
     success_url = reverse_lazy('mycrm:user')
+    my_message = 'You delete user succesfully!'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context['page_title'] = 'Delete User:'
         return context
-
-    def delete(self, request, *args, **kwargs):
-        messages.success(self.request, 'You delete user succesfully!')
-        return super().delete(request, *args, **kwargs)
 
 
 class CompaniesListView(LoginRequiredMixin, ListView):
@@ -116,25 +120,19 @@ class CompaniesListView(LoginRequiredMixin, ListView):
         return qs
 
 
-class CompanyUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class CompanyUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessage):
     permission_required = 'mycrm.change_company'
     form_class = forms.CompanyForm
     model = models.Company
     success_url = reverse_lazy('mycrm:company')
-
-    def form_valid(self, form):
-        messages.success(self.request, 'You change company data succesfully!')
-        return super().form_valid(form)
+    my_message = 'You change company data succesfully!'
 
 
-class CompanyDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class CompanyDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMessage):
     permission_required = 'mycrm.delete_company'
     model = models.Company
     success_url = reverse_lazy('mycrm:company')
-
-    def delete(self, request, *args, **kwargs):
-        messages.success(self.request, 'You delete company succesfully!')
-        return super().delete(request, *args, **kwargs)
+    my_message = 'You delete company succesfully!'
 
 
 class CompanyEmployerBusinessCardList(LoginRequiredMixin, ListView):
@@ -160,24 +158,17 @@ class ContactAdd(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('mycrm:company')
 
 
-class ContactEdit(LoginRequiredMixin, UpdateView):
+class ContactEdit(LoginRequiredMixin, UpdateViewWithMessage):
     form_class = forms.ContactAddForm
     model = models.BusinessCard
     success_url = reverse_lazy('mycrm:company')
-
-    def form_valid(self, form):
-        messages.success(self.request, 'You update contact succesfully!')
-        return super().form_valid(form)
+    my_message = 'You update contact succesfully!'
 
 
-
-class ContactDelete(LoginRequiredMixin, DeleteView):
+class ContactDelete(LoginRequiredMixin, DeleteViewWithMessage):
     model = models.BusinessCard
     success_url = reverse_lazy('mycrm:company')
-
-    def delete(self, request, *args, **kwargs):
-        messages.success(self.request, 'You delete contact succesfully!')
-        return super().delete(request, *args, **kwargs)
+    my_message = 'You delete contact succesfully!'
 
 
 class OrderAdd(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -187,12 +178,9 @@ class OrderAdd(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     success_url = reverse_lazy('mycrm:company')
 
 
-class OrderEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class OrderEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessage):
     permission_required = 'mycrm.change_order'
     form_class = forms.OrderAddForm
     model = models.Order
     success_url = reverse_lazy('mycrm:company')
-
-    def form_valid(self, form):
-        messages.success(self.request, 'You update order succesfully!')
-        return super().form_valid(form)
+    my_message = 'You update order succesfully!'
