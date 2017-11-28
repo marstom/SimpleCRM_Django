@@ -12,14 +12,10 @@ import mycrm.forms as forms
 from io import BytesIO
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
-
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserChangeForm, UserCreationForm, PasswordChangeForm #for user edit
 
 #authenticate user
 from django.contrib.auth import logout
-
 #my utilities
 from mycrm.my_utilities import queries
 
@@ -89,7 +85,8 @@ class RegisterUser(CreateView):
     template_name = 'user/register_user.html'
     success_url = reverse_lazy('mycrm:user')
 
-class UserEdit(UpdateViewWithMessage):
+class UserEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessage):
+    permission_required = 'auth.change_user'
     form_class = forms.EditUserForm
     model = User
     template_name = 'update_view.html'
@@ -98,7 +95,8 @@ class UserEdit(UpdateViewWithMessage):
     page_title = 'Edit User:'
 
 
-class UserDelete(DeleteViewWithMessage):
+class UserDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMessage):
+    permission_required = 'auth.delete_user'
     model = User
     template_name = 'delete_view.html'
     success_url = reverse_lazy('mycrm:user')
