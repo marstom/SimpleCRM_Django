@@ -1,5 +1,7 @@
+#core Django imports
 from django.contrib import admin
-from mycrm.models import Company, BusinessCard, Order
+#Import from current app
+from .models import Company, BusinessCard, Order
 
 # Register your models here.
 admin.site.register(Company)

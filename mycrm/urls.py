@@ -1,5 +1,6 @@
+#core Django imports
 from django.conf.urls import url
-
+#Import from current app
 from . import views
 
 app_name = 'mycrm'

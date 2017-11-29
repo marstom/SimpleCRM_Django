@@ -1,41 +1,40 @@
+#core Django imports
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.edit import UpdateView, DeleteView
-import mycrm.models as models
-import mycrm.forms as forms
-
-from io import BytesIO
-from reportlab.pdfgen import canvas
+from django.contrib.auth import logout
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
-#authenticate user
-from django.contrib.auth import logout
-#my utilities
+#Import from current app
+import mycrm.models as models
+import mycrm.forms as forms
+
+#Third party libraries import
+from reportlab.pdfgen import canvas
+
+#my utilities and libraries
 from mycrm.my_utilities import queries
+
 
 session = SessionStore()
 
-@login_required
-def index_page(request):
-    return render(request, 'index.html', {})
-
 def logout_crm(request):
+    '''
+    logout current user
+    /mycrm/logout
+    '''
     logout(request)
     return render(request, 'logout.html')
-
-@login_required
-def user_page(request):
-    return render(request, 'user/user.html', {})
 
 def company_report(request):
     '''
     create pdf report
+    company/report
     '''
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
@@ -52,6 +51,11 @@ def company_report(request):
     return response
 
 class UpdateViewWithMessage(UpdateView):
+    '''
+    Extended Update view contain field:
+    my_message - message which displays in green bracket after succesfull delete, user must first set this field
+    page_title - title that dispalys in update page header
+    '''
     def form_valid(self, form):
         messages.success(self.request, self.my_message)
         return super().form_valid(form)
@@ -63,6 +67,12 @@ class UpdateViewWithMessage(UpdateView):
         return context
 
 class DeleteViewWithMessage(DeleteView):
+    '''
+    Extended Update view contain field:
+    my_message - message which displays in green bracket after succesfull delete, user must first set this field
+    page_title - title that dispalys in update page header
+    page_text - text display below page title in <p>page_text</p>
+    '''
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.my_message)
         return super().delete(request, *args, **kwargs)
@@ -74,18 +84,30 @@ class DeleteViewWithMessage(DeleteView):
         return context
 
 class UsersList(ListView):
+    '''
+    page with users table
+    mycrm/user/
+    '''
     template_name = 'user/user.html'
     context_object_name = 'users'
     model = User
 
 
 class RegisterUser(CreateView):
+    '''
+    registration page
+    mycrm/user/register
+    '''
     form_class = forms.SignUpForm
     model = User #user from django
     template_name = 'user/register_user.html'
     success_url = reverse_lazy('mycrm:user')
 
 class UserEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessage):
+    '''
+    user edit page
+    mycrm/user/<user_id>/edit
+    '''
     permission_required = 'auth.change_user'
     form_class = forms.EditUserForm
     model = User
@@ -96,6 +118,10 @@ class UserEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessag
 
 
 class UserDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMessage):
+    '''
+    user delete page
+    mycrm/user/<user_id>/delete
+    '''
     permission_required = 'auth.delete_user'
     model = User
     template_name = 'delete_view.html'
@@ -105,8 +131,11 @@ class UserDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMess
     page_text = 'Are you sure delete user?'
 
 
-
 class CompaniesListView(LoginRequiredMixin, ListView):
+    '''
+    page with companies table
+    mycrm/company
+    '''
     model = models.Company
     template_name = 'company/company.html'
 
@@ -116,6 +145,10 @@ class CompaniesListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self): # for filtering
+        '''
+        Using for filtering (search filed)
+        :return: filtered queryset
+        '''
         qs= super().get_queryset()
         var = self.request.GET.get('q')
         if var:
@@ -124,6 +157,10 @@ class CompaniesListView(LoginRequiredMixin, ListView):
 
 
 class CompanyUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessage):
+    '''
+    company update page
+    mycrm/company/<company_id>/edit
+    '''
     permission_required = 'mycrm.change_company'
     form_class = forms.CompanyForm
     model = models.Company
@@ -134,6 +171,10 @@ class CompanyUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithM
 
 
 class CompanyDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMessage):
+    '''
+    company delete page
+    mycrm/<company_id>/delete
+    '''
     permission_required = 'mycrm.delete_company'
     model = models.Company
     success_url = reverse_lazy('mycrm:company')
@@ -143,30 +184,41 @@ class CompanyDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithM
     my_message = 'You delete company succesfully!'
 
 
-class CompanyEmployerBusinessCardList(LoginRequiredMixin, ListView):
-    template_name = 'company/company_business_card.html'
-
-    def get_queryset(self):
-        return models.BusinessCard.objects.all()
-
 class CompanyDetailView(LoginRequiredMixin, DetailView):
+    '''
+    company detail view:
+    description, contacts table, orders table
+    mycrm/company/<company_id>/
+    '''
     model = models.Company
     template_name = 'company/company_detail.html'
 
 
 class CompanyAdd(LoginRequiredMixin, CreateView):
+    '''
+    add new company form
+    mycrm/company/add
+    '''
     form_class = forms.CompanyForm
     template_name = 'mycrm/company_form.html'
     success_url = reverse_lazy('mycrm:company')
 
 
 class ContactAdd(LoginRequiredMixin, CreateView):
+    '''
+    add new company form
+    mycrm/company/addcontact
+    '''
     form_class = forms.ContactAddForm
     template_name = 'mycrm/contact_form.html'
     success_url = reverse_lazy('mycrm:company')
 
 
 class ContactEdit(LoginRequiredMixin, UpdateViewWithMessage):
+    '''
+    edit contact on company detail page
+    mycrm/company/<contact_id>/editcontact
+    '''
     form_class = forms.ContactAddForm
     model = models.BusinessCard
     template_name = 'update_view.html'
@@ -176,6 +228,10 @@ class ContactEdit(LoginRequiredMixin, UpdateViewWithMessage):
 
 
 class ContactDelete(LoginRequiredMixin, DeleteViewWithMessage):
+    '''
+    delete contact on company detail page
+    mycrm/company/<contact_id>/deletecontact
+    '''
     model = models.BusinessCard
     success_url = reverse_lazy('mycrm:company')
     my_message = 'You delete contact succesfully!'
@@ -186,6 +242,10 @@ class ContactDelete(LoginRequiredMixin, DeleteViewWithMessage):
 
 
 class OrderAdd(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    '''
+    Add new contact
+    mycrm/company/addcontact
+    '''
     permission_required = 'mycrm.add_order'
     form_class = forms.OrderAddForm
     template_name = 'mycrm/order_form.html'
@@ -193,6 +253,10 @@ class OrderAdd(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
 
 class OrderEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessage):
+    '''
+    edit order on company detail page
+    mycrm/company/<contact_id>/orderedit
+    '''
     permission_required = 'mycrm.change_order'
     form_class = forms.OrderAddForm
     model = models.Order
