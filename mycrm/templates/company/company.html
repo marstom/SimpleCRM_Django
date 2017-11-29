@@ -1,14 +1,27 @@
 {% extends 'base.html' %}
 
+{% block header %}
+        <script>
+        $(document).ready(function () {
+            $('table').DataTable({
+                "pagingType": "full_numbers",
+                "searching": false,
+                "lengthMenu": [5, 10, 15, 25, 50],
+                responsive: true
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block sidebar_content %}
 {% include '_companies_bar.html' %}
 {% endblock %}
 
 {% block content %}
 
-<h1>Companies page</h1>
+<h2 class="h2">Companies page</h2>
 
-    <table class="table">
+    <table cellspacing="1" class="table table-striped table-bordered">
       <thead class="thead-light">
         <tr>
           <th scope="col">#</th>
@@ -30,7 +43,6 @@
               <i class="fa fa-eur" aria-hidden="true"></i></td>
           <td>
               <a class="btn btn-light" href="{% url 'mycrm:detail' company.pk %}">Details <i class="fa fa-address-card-o" aria-hidden="true"></i></a>
-              <!--<a class="btn btn-primary" href="{% url 'mycrm:detail' company.pk %}" role="button">Details</a> -->
               <a class="btn btn-primary" href="{% url 'mycrm:company_edit' company.pk %}" role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
               <a class="btn btn-primary" href="{% url 'mycrm:company_delete' company.pk %}" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
 

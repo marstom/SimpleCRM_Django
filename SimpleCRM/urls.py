@@ -17,13 +17,14 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
 #import django.contrib.auth.urls
+from django.views.generic import RedirectView
 
 import mycrm.views
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url('^$', mycrm.views.UsersList.as_view()),
+    url('^$', RedirectView.as_view(url='/mycrm/user')),
     url('^mycrm/', include('mycrm.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')),
 ]

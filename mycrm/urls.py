@@ -1,5 +1,6 @@
+#core Django imports
 from django.conf.urls import url
-
+#Import from current app
 from . import views
 
 app_name = 'mycrm'
@@ -7,6 +8,8 @@ app_name = 'mycrm'
 urlpatterns=[
     url(r'^$', views.UsersList.as_view(), name="index_page_show"),
     url(r'^user/$', views.UsersList.as_view(), name="user"),
+    url(r'^user/(?P<pk>[0-9]+)/edit$', views.UserEdit.as_view(), name="user_edit"),
+    url(r'^user/(?P<pk>[0-9]+)/delete$', views.UserDelete.as_view(), name="user_delete"),
     url(r'^user/register$', views.RegisterUser.as_view(), name="registeruser"),
     url(r'^logout/$', views.logout_crm, name="logout"),
     url(r'^company/$', views.CompaniesListView.as_view(), name="company"),
