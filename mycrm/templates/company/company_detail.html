@@ -2,34 +2,21 @@
 {% load staticfiles %}
 
 {% block header %}
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
 
-
-        .bg-1 {
-            background-color: #429dee;
-            padding-top: 2rem;
-            color: #ffffff;
+        h3 {
+            font-family: Arial;
         }
 
-        .bg-2 {
-            background-color: #474e5d;
-            color: #ffffff;
+        .nav .nav-tabs {
+            font-family: Arial;
+            color: blue;
         }
 
-        .bg-3 {
-            background-color: #ffffff;
-            color: #555555;
-        }
-
-        .myimg {
-            padding-bottom: 20px;
-            padding-top: 20px;
-        }
-
-        .col-centered {
-            float: none;
-            margin: 0 auto;
+        .st1 {
+            color: #000000;
+            background-color: #8e918e;
         }
 
     </style>
@@ -41,126 +28,121 @@
 
 {% block content %}
 
-
+    <p>{% static 'css/style.css' %}</p>
 
     <h2>Company details:</h2>
-    <div class="container-fluid">
-        <h3>{{ company }}</h3>
-        <img class="img rounded" onerror="this.src='{% static 'img/no_image.png' %}';" alt="ghf" height="200"
-             src="{{ company.picture }}"/>
-        <h3>{{ company.description }}</h3>
-        <p class="lead">Number of employes: {{ company.businesscard_set.count }}</p>
-        <p>{{ company.description }}</p>
+
+
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#home" role="tab">About</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Contact list</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#messages" role="tab">Order List</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="home" role="tabpanel">
+            <div class="container-fluid jumbotron">
+                <div>
+                    <h2 class="text-center">Company name: </h2>
+                    <h3 class="text-center">{{ company }}</h3>
+                    <h2 class="text-center">Logo:</h2>
+                    <div class="text-center" style="padding-bottom: 22px; padding-top=22px;">
+                        <img class="img rounded text-center" onerror="this.src='{% static 'img/no_image.png' %}';"
+                             alt="ghf"
+                             height="200"
+                             src="{{ company.picture }}"/>
+                    </div>
+                    <p>
+                    <h2 class="text-center">About company:</h2>
+                    <h3 class="text-center">{{ company.description }}</h3>
+                    </p>
+                    <h2 class="text-center">Number of employees</h2>
+                    <h3 class="text-center">{{ company.businesscard_set.count }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="profile" role="tabpanel">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>contact name</th>
+                    <th>phone number</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for card in company.businesscard_set.all %}
+                    <tr class="active">
+                        <td>{{ forloop.counter }}</td>
+                        <td><a class="btn btn-light" href="{% url 'mycrm:edit_contact' card.pk %}"><i
+                                class="fa fa-address-card-o" aria-hidden="true"></i></a>
+                            <a class="btn btn-primary" href="{% url 'mycrm:delete_contact' card.pk %}"
+                               role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            {{ card.name }} {{ card.last_name }} </td>
+                        <td>{{ card.phone }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="messages" role="tabpanel">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Value</th>
+                    <th>Payment status</th>
+                    <th>date created</th>
+                    <th>Finished</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in company.order_set.all %}
+                    <tr class="active">
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <a class="btn btn-primary" href="{% url 'mycrm:order_edit' order.pk %}"
+                               role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                            {{ order.name }}
+                        </td>
+                        <td>{{ order.description }}</td>
+                        <td>{{ order.value }}</td>
+                        <td>
+                            {% if order.payment_status %}
+                                <img src="{% static 'img/ok.png' %}"/>
+                            {% else %}
+                                <img src="{% static 'img/nok.png' %}"/>
+                            {% endif %}
+                        </td>
+                        <td>{{ order.date_created }}</td>
+                        <td>
+                            {% if order.project_is_finished %}
+                                <img src="{% static 'img/ok.png' %}"/>
+                            {% else %}
+                                <img src="{% static 'img/nok.png' %}"/>
+                            {% endif %}
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 
 
-
-
-
-    <!-- Contact list -->
-    <div id="accordion" role="tablist">
-        <div class="card">
-            <div class="card-header" role="tab" id="headingOne">
-                <h5 class="mb-0">
-                    <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Contact List ....
-                    </a>
-                </h5>
-            </div>
-
-            <div id="collapseOne" class="collapse show" role="tabpanel" aria-expanded="false"
-                 aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
-
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>contact name</th>
-                            <th>phone number</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for card in company.businesscard_set.all %}
-                            <tr class="active">
-                                <td>{{ forloop.counter }}</td>
-                                <td><a class="btn btn-light" href="{% url 'mycrm:edit_contact' card.pk %}"><i
-                                        class="fa fa-address-card-o" aria-hidden="true"></i></a>
-                                    <a class="btn btn-primary" href="{% url 'mycrm:delete_contact' card.pk %}"
-                                       role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                    {{ card.name }} {{ card.last_name }} </td>
-                                <td>{{ card.phone }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header" role="tab" id="headingTwo">
-                <h5 class="mb-0">
-                    <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false"
-                       aria-controls="collapseTwo">
-                        Order List ....
-                    </a>
-                </h5>
-            </div>
-            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo"
-                 data-parent="#accordion">
-                <div class="card-body">
-
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Value</th>
-                            <th>Payment status</th>
-                            <th>date created</th>
-                            <th>Finished</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for order in company.order_set.all %}
-                            <tr class="active">
-                                <td>{{ forloop.counter }}</td>
-                                <td>
-                                    <a class="btn btn-primary" href="{% url 'mycrm:order_edit' order.pk %}"
-                                       role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                    {{ order.name }}
-                                </td>
-                                <td>{{ order.description }}</td>
-                                <td>{{ order.value }}</td>
-                                <td>
-                                    {% if order.payment_status %}
-                                        <img src="{% static 'img/ok.png' %}"/>
-                                    {% else %}
-                                        <img src="{% static 'img/nok.png' %}"/>
-                                    {% endif %}
-                                </td>
-                                <td>{{ order.date_created }}</td>
-                                <td>
-                                    {% if order.project_is_finished %}
-                                        <img src="{% static 'img/ok.png' %}"/>
-                                    {% else %}
-                                        <img src="{% static 'img/nok.png' %}"/>
-                                    {% endif %}
-
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </div>
-
-    </div>
 
 
 {% endblock %}
