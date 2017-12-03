@@ -1,24 +1,61 @@
 {% extends 'base.html' %}
-{% load staticfiles%}
+{% load staticfiles %}
+
+{% block header %}
+
+    <style>
+
+
+        .bg-1 {
+            background-color: #429dee;
+            padding-top: 2rem;
+            color: #ffffff;
+        }
+
+        .bg-2 {
+            background-color: #474e5d;
+            color: #ffffff;
+        }
+
+        .bg-3 {
+            background-color: #ffffff;
+            color: #555555;
+        }
+
+        .myimg {
+            padding-bottom: 20px;
+            padding-top: 20px;
+        }
+
+        .col-centered {
+            float: none;
+            margin: 0 auto;
+        }
+
+    </style>
+{% endblock %}
 
 {% block sidebar_content %}
     {% include '_companies_bar.html' %}
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="jumbotron container-fluid">
-            <h1 class="display-2">{{ company }}</h1>
 
-            {% if company.picture != '' %}
-            <img class="img-fluid rounded" alt="Responsive image" height="200" width="200" src="{{ company.picture }}"/>
-            {% else %}
-                <img class="img-fluid rounded" alt="Responsive image" height="200" width="200" src="{% static 'img/no_image.png' %}"/>
-            {% endif %}
-            <p class="lead">{{ company.description }}</p>
-            <p class="lead">Number of employes: {{ company.businesscard_set.count }}</p>
-        </div>
+
+
+    <h2>Company details:</h2>
+    <div class="container-fluid">
+        <h3>{{ company }}</h3>
+        <img class="img rounded" onerror="this.src='{% static 'img/no_image.png' %}';" alt="ghf" height="200"
+             src="{{ company.picture }}"/>
+        <h3>{{ company.description }}</h3>
+        <p class="lead">Number of employes: {{ company.businesscard_set.count }}</p>
+        <p>{{ company.description }}</p>
     </div>
+
+
+
+
 
 
     <!-- Contact list -->
@@ -48,8 +85,10 @@
                         {% for card in company.businesscard_set.all %}
                             <tr class="active">
                                 <td>{{ forloop.counter }}</td>
-                                <td><a class="btn btn-light" href="{% url 'mycrm:edit_contact' card.pk %}"><i class="fa fa-address-card-o" aria-hidden="true"></i></a>
-                                    <a class="btn btn-primary" href="{% url 'mycrm:delete_contact' card.pk %}" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                <td><a class="btn btn-light" href="{% url 'mycrm:edit_contact' card.pk %}"><i
+                                        class="fa fa-address-card-o" aria-hidden="true"></i></a>
+                                    <a class="btn btn-primary" href="{% url 'mycrm:delete_contact' card.pk %}"
+                                       role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                     {{ card.name }} {{ card.last_name }} </td>
                                 <td>{{ card.phone }}</td>
                             </tr>
@@ -90,7 +129,8 @@
                             <tr class="active">
                                 <td>{{ forloop.counter }}</td>
                                 <td>
-                                    <a class="btn btn-primary" href="{% url 'mycrm:order_edit' order.pk %}" role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    <a class="btn btn-primary" href="{% url 'mycrm:order_edit' order.pk %}"
+                                       role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                     {{ order.name }}
                                 </td>
                                 <td>{{ order.description }}</td>
