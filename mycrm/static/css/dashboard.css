@@ -4,6 +4,7 @@
 
 /* Move down content because we have a fixed navbar that is 3.5rem tall */
 body {
+  font-family: Helvetica;
   padding-top: 3.5rem;
 }
 
@@ -12,8 +13,8 @@ body {
  */
 
 h1 {
-  padding-bottom: 9px;
-  margin-bottom: 20px;
+  padding-bottom: 1px;
+  margin-bottom: 10px;
   border-bottom: 1px solid #eee;
 }
 
@@ -33,21 +34,6 @@ h1 {
   border-right: 1px solid #eee;
 }
 
-.sidebar .nav {
-  margin-bottom: 20px;
-}
-
-.sidebar .nav-item {
-  width: 100%;
-}
-
-.sidebar .nav-item + .nav-item {
-  margin-left: 0;
-}
-
-.sidebar .nav-link {
-  border-radius: 0;
-}
 
 /*
  * Dashboard
@@ -62,3 +48,20 @@ h1 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

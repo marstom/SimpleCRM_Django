@@ -83,6 +83,19 @@ class DeleteViewWithMessage(DeleteView):
         context['page_text'] = '{} {}?'.format(self.page_text, context['object'])
         return context
 
+
+class CreateViewWithMessage(CreateView):
+    '''
+    Create view with green popup message after success submit
+    Child must overrdte my_message
+    '''
+
+    def form_valid(self, form):
+        messages.success(self.request, self.my_message)
+        return super().form_valid(form)
+
+
+
 class UsersList(ListView):
     '''
     page with users table
@@ -93,7 +106,7 @@ class UsersList(ListView):
     model = User
 
 
-class RegisterUser(CreateView):
+class RegisterUser(CreateViewWithMessage):
     '''
     registration page
     mycrm/user/register
@@ -102,6 +115,7 @@ class RegisterUser(CreateView):
     model = User #user from django
     template_name = 'user/register_user.html'
     success_url = reverse_lazy('mycrm:user')
+    my_message = 'User created succesfully!'
 
 class UserEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessage):
     '''
@@ -194,7 +208,7 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
     template_name = 'company/company_detail.html'
 
 
-class CompanyAdd(LoginRequiredMixin, CreateView):
+class CompanyAdd(LoginRequiredMixin, CreateViewWithMessage):
     '''
     add new company form
     mycrm/company/add
@@ -202,9 +216,10 @@ class CompanyAdd(LoginRequiredMixin, CreateView):
     form_class = forms.CompanyForm
     template_name = 'mycrm/company_form.html'
     success_url = reverse_lazy('mycrm:company')
+    my_message = 'Add Company Success!'
 
 
-class ContactAdd(LoginRequiredMixin, CreateView):
+class ContactAdd(LoginRequiredMixin, CreateViewWithMessage):
     '''
     add new company form
     mycrm/company/addcontact
@@ -212,7 +227,7 @@ class ContactAdd(LoginRequiredMixin, CreateView):
     form_class = forms.ContactAddForm
     template_name = 'mycrm/contact_form.html'
     success_url = reverse_lazy('mycrm:company')
-
+    my_message = 'Add Contact successfuly!'
 
 class ContactEdit(LoginRequiredMixin, UpdateViewWithMessage):
     '''
@@ -241,7 +256,7 @@ class ContactDelete(LoginRequiredMixin, DeleteViewWithMessage):
     my_message = 'You delete contact succesfully!'
 
 
-class OrderAdd(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class OrderAdd(LoginRequiredMixin, PermissionRequiredMixin, CreateViewWithMessage):
     '''
     Add new contact
     mycrm/company/addcontact
@@ -250,6 +265,7 @@ class OrderAdd(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     form_class = forms.OrderAddForm
     template_name = 'mycrm/order_form.html'
     success_url = reverse_lazy('mycrm:company')
+    my_message = 'Add order succesfull!'
 
 
 class OrderEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessage):
