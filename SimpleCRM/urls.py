@@ -24,7 +24,7 @@ import mycrm.views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url('^$', RedirectView.as_view(url='/mycrm/user')),
+    url('^$', RedirectView.as_view(url='/mycrm/login')),
     url('^mycrm/', include('mycrm.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')),
 ]

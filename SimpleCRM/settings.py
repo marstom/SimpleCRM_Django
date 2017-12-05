@@ -136,7 +136,7 @@ MESSAGE_TAGS = {
 }
 
 #after login
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/mycrm'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
