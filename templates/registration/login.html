@@ -1,16 +1,18 @@
-{% extends "base.html" %}
-{% load crispy_forms_tags %}
 
+
+{% extends "registration/user_forms_base.html" %}
 {% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
 
-    <form method="post" action="{% url 'login' %}">
+<div class="login-page">
+    <form class="form" class="login-form" method="post">
         {% csrf_token %}
         {{ form|crispy }}
-        <input class="btn btn-primary" type="submit" value="login"/>
-        <input type="hidden" name="next" value="{{ next }}"/>
+        <button type="submit" class="btn btn-primary">login</button>
+        <p class="message">Forgot password? <a href="{% url 'mycrm:password_reset' %}">Send an email</a></p>
     </form>
-
-
-
+</div>
 
 {% endblock %}
+

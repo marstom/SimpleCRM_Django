@@ -6,3 +6,4 @@ sqlparse
 mysqlclient==1.3.12
 reportlab
 django-smtp-ssl
+django-widget-tweaks #for add css class
