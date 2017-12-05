@@ -3,6 +3,6 @@
 database="mycrm"
 user="tomek"
 password="kH9bya8MREXDp9rt"
-host="localhost"
+host="127.0.0.1"
 port=3306
 default-character-set=utf8

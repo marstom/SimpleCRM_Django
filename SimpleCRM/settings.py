@@ -79,12 +79,12 @@ WSGI_APPLICATION = 'SimpleCRM.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
 # DATABASES = {
@@ -98,14 +98,14 @@ DATABASES = {
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'OPTIONS': {
-#             'read_default_file': os.path.join(BASE_DIR, 'mysql.cnf')
-#         },
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': os.path.join(BASE_DIR, 'mysql.cnf')
+        },
+    }
+}
 
 
 # Password validation
@@ -137,6 +137,23 @@ MESSAGE_TAGS = {
 
 #after login
 LOGIN_REDIRECT_URL = '/mycrm'
+
+#Email config for reseting password
+#Blocked
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = 'poczta.o2.pl'
+# SERVER_EMAIL = 'jan2345@o2.pl'
+# EMAIL_HOST = 'poczta.o2.pl'
+# EMAIL_PORT = 465
+# EMAIL_HOST_USER = 'jan2345@o2.pl'
+# EMAIL_HOST_PASSWORD = '!paprotka123'
+# EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+
+# EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+# EMAIL_HOST = 'jan2345@o2.pl'
+# EMAIL_PORT = 465
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
