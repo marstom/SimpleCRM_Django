@@ -139,7 +139,7 @@ MESSAGE_TAGS = {
 LOGIN_REDIRECT_URL = '/mycrm'
 
 #Email config for reseting password
-#Blocked
+#TODO o2.pl email not works, fix it
 # EMAIL_USE_TLS = True
 # DEFAULT_FROM_EMAIL = 'poczta.o2.pl'
 # SERVER_EMAIL = 'jan2345@o2.pl'
@@ -172,6 +172,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+#TODO change static root
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'mycrm', 'static')
 # STATICFILES_DIRS = [

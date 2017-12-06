@@ -1,3 +1,7 @@
+'''
+mycrm all views
+'''
+
 #core Django imports
 from django.contrib import messages
 from django.contrib.sessions.backends.db import SessionStore

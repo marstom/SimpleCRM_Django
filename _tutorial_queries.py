@@ -1,3 +1,11 @@
+'''
+
+Queries examples
+
+python manage.py shell < _tutorial_queries.py
+
+'''
+
 from mycrm.models import *
 
 def get_companies_report_text():
