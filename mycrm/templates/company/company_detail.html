@@ -152,7 +152,6 @@
                     <thead>
                     <tr align="center">
                             <th>
-                                <a class="btn btn-primary" align="center">Add comment</a>
                                 <form method="get">
                                     {% csrf_token %}
                                         <div class="form-group">
@@ -163,7 +162,7 @@
                                           <label class="col-form-label" for="formGroupExampleInput2">Comment</label>
                                           <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input" name="comm">
                                         </div>
-                                        <input type="submit" class="btn btn-primary">
+                                        <input type="submit" class="btn btn-primary" value="Submit comment">
                                 </form>
                             </th>
                         <!-- <th>Comment</th>  -->
@@ -176,7 +175,12 @@
                                 <div class="jumbotron">
                                     <h3>{{ comment.title }}</h3>
                                     <div class="col-sm-3">{{ comment.comment }}</div> 
-                                    <div align="right"><a align="left" class="btn btn-primary">Delete</a></div>
+                                    <!-- deletebutton -->
+                                    <div align="right">
+                                    <form method="get">
+                                        <button type="submit" align="left" class="btn btn-primary" name="delete_comment" value="{{comment.pk}}">Delete</button>
+                                    </form>
+                                </div>
                                     <div align="left"> 
                                         <a class="text-muted">Date: {{ comment.date }}</a> 
                                         <a class="text-muted">Useer: {{ comment.user }}</a> 

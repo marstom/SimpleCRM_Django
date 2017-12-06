@@ -18,6 +18,7 @@ from django.contrib.auth.decorators import login_required
 #Import from current app
 import mycrm.models as models
 import mycrm.forms as forms
+from logger import logger
 
 #Third party libraries import
 from reportlab.pdfgen import canvas
@@ -224,23 +225,30 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
         return context
 
     def get(self, request, *args, **kwargs):
-        if request.GET:
-            print('REQ   ', request)
-            print('kwargs   ', kwargs, request.user)
-            print('Metoda get ', request.GET['title'])
-            print('Metoda get com ', request.GET['comm'])
+        get = request.GET
+        if get and 'comm' in get and 'title' in get:
+            logger.info('ADDING COMMENT ...')
+            logger.info('REQEST ->   {}'.format(request))
+            logger.info('kwargs  {} user {} '.format(kwargs, request.user))
             title = request.GET['title']
             comm = request.GET['comm']
             current_company = models.Company.objects.get(pk=kwargs['pk'])
-            #pk mam w request current_company.comment_set
+            #pk mam w request current_company.comment_set - comment_set.comment - wyciągam coś z comment
             comment = models.Comment(company=current_company, user=request.user, title=title, comment=comm)
             comment.save()
-            print(comment)
+            logger.info('comment content :{}'.format(comment))
 
-        return super().get(self.request, *args, **kwargs)
+        if get and 'delete_comment' in get:
+            logger.info('DELETING COMMENT ...')
+            logger.info('comment clicked id {}'.format(get['delete_comment']))
+            try:
+                current_comment = models.Comment.objects.get(pk=get['delete_comment'])
+                logger.info(current_comment)
+                current_comment.delete()
+            except:
+                logger.error('no comment with corresponding ID')
 
-
-
+        return super().get(kwargs, *args, **kwargs)
 
 
 class CompanyAdd(LoginRequiredMixin, CreateViewWithMessage):

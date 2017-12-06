@@ -19,3 +19,5 @@ def validate_phone(value):
         print(value, type(value))
         msg = "This is not valid phone number, digits must be separated - or in one line. Example: 12-123-123-123"
         raise ValidationError(msg)
+
+    return result

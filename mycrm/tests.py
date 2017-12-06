@@ -8,15 +8,30 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 # Create your tests here.
-import logging
-logger = logging.getLogger(__name__)
+
+#local imports
+from logger import logger
 
 
 class TestValidators(TestCase):
     def test_validator_phone(self):
         from . import validators
-        validators.validate_phone('123-123')
+        result = validators.validate_phone('123-123')
         self.assertRaises(ValidationError)
-        # with self.assertRaises(ValidationError) as cm:
-        #     logger.error(cm)
-        # self.assertRaisesMessage(ValidationError, expected_message='This is not valid phone number, digits must be separated - or in one line. Example: 12-123-123-123')
+        self.assertTrue(result, 'success')
+
+    def test_validator_phone_digits(self):
+        from . import validators
+        result = validators.validate_phone('123424234424247672936952')
+        self.assertRaises(ValidationError)
+        self.assertTrue(result, 'success')
+
+    def test_validator_phone_empty(self):
+        '''
+        Test should not pass, must fix regex
+        :return:
+        '''
+        from . import validators
+        result = validators.validate_phone('123-123----')
+        self.assertRaises(ValidationError)
+        self.assertFalse(result, 'success')
