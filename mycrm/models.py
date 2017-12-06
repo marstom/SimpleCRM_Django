@@ -3,6 +3,7 @@ Database models for mycrm
 '''
 #core Django imports
 from django.db import models
+from django.contrib.auth.models import User
 
 #local imports
 from .validators import validate_phone
@@ -23,6 +24,22 @@ class Company(models.Model):
 
     def __str__(self):
         return self.name
+
+class Comment(models.Model):
+    '''
+    Company comment
+    related to user and company
+    '''
+    title = models.CharField(max_length=255, default=None)
+    comment = models.TextField(max_length=4000)
+
+    #current time when coment post
+    date = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User)
+    company = models.ForeignKey(Company)
+
+    def __str__(self):
+        return self.title
 
 class BusinessCard(models.Model):
     '''

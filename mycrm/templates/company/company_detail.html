@@ -45,6 +45,9 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#messages" role="tab">Order List</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#comments" role="tab">Comments</a>
+        </li>
     </ul>
 
     <!-- Tab panes -->
@@ -71,6 +74,7 @@
             </div>
         </div>
         <div class="tab-pane" id="profile" role="tabpanel">
+            
             <table class="table">
                 <thead>
                 <tr>
@@ -93,6 +97,7 @@
                 {% endfor %}
                 </tbody>
             </table>
+
         </div>
         <div class="tab-pane" id="messages" role="tabpanel">
             <table class="table">
@@ -139,6 +144,56 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- comment tab -->
+        <div class="tab-pane" id="comments" role="tabpanel">
+
+            <table class="table">
+                    <thead>
+                    <tr align="center">
+                            <th>
+                                <a class="btn btn-primary" align="center">Add comment</a>
+                                <form method="get">
+                                    {% csrf_token %}
+                                        <div class="form-group">
+                                          <label class="col-form-label" for="formGroupExampleInput">Title</label>
+                                          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input" name="title">
+                                        </div>
+                                        <div class="form-group">
+                                          <label class="col-form-label" for="formGroupExampleInput2">Comment</label>
+                                          <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input" name="comm">
+                                        </div>
+                                        <input type="submit" class="btn btn-primary">
+                                </form>
+                            </th>
+                        <!-- <th>Comment</th>  -->
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for comment in comments %}
+                        <tr align="center">
+                            <td>
+                                <div class="jumbotron">
+                                    <h3>{{ comment.title }}</h3>
+                                    <div class="col-sm-3">{{ comment.comment }}</div> 
+                                    <div align="right"><a align="left" class="btn btn-primary">Delete</a></div>
+                                    <div align="left"> 
+                                        <a class="text-muted">Date: {{ comment.date }}</a> 
+                                        <a class="text-muted">Useer: {{ comment.user }}</a> 
+                                        
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+
+
+
+        </div>
+
     </div>
 
 

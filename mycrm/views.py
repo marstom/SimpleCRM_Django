@@ -216,6 +216,32 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
     model = models.Company
     template_name = 'company/company_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = models.Comment.objects.all()
+        print(kwargs)
+        print(context)
+        return context
+
+    def get(self, request, *args, **kwargs):
+        if request.GET:
+            print('REQ   ', request)
+            print('kwargs   ', kwargs, request.user)
+            print('Metoda get ', request.GET['title'])
+            print('Metoda get com ', request.GET['comm'])
+            title = request.GET['title']
+            comm = request.GET['comm']
+            current_company = models.Company.objects.get(pk=kwargs['pk'])
+            #pk mam w request current_company.comment_set
+            comment = models.Comment(company=current_company, user=request.user, title=title, comment=comm)
+            comment.save()
+            print(comment)
+
+        return super().get(self.request, *args, **kwargs)
+
+
+
+
 
 class CompanyAdd(LoginRequiredMixin, CreateViewWithMessage):
     '''
