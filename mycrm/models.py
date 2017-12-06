@@ -4,6 +4,9 @@ Database models for mycrm
 #core Django imports
 from django.db import models
 
+#local imports
+from .validators import validate_phone
+
 
 class Company(models.Model):
     '''
@@ -27,8 +30,9 @@ class BusinessCard(models.Model):
     '''
     name = models.CharField(max_length=500)
     last_name = models.CharField(max_length=500)
-    phone = models.CharField(max_length=500)
+    phone = models.CharField(max_length=500, validators=[validate_phone])
     company = models.ForeignKey(Company)
+
 
     class Meta:
         verbose_name = 'Business Card'

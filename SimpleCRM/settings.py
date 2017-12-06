@@ -10,9 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
-import os
-from django.contrib.messages import constants as messages
 
+#standard library
+import logging
+import os
+
+#Django imports
+from django.contrib.messages import constants as messages
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -173,11 +183,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 #TODO change static root
+# MEDIA_URL = ''
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'mycrm', 'static')
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'mycrm', 'static'),
-# ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'mycrm', 'static'),
+]
+
+#for debug purposes
+logger.info(STATIC_URL)
+logger.info('static root {}'.format(STATIC_ROOT))
+logger.info('static file dirs {}'.format(STATICFILES_DIRS))
+logger.info('there are following templates -> \n{}'.format(TEMPLATES))
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4' #Crispy theme
 

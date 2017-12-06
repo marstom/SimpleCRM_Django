@@ -13,7 +13,7 @@ app_name = 'mycrm'
 
 urlpatterns=[
     #login views
-    url(r'^login/$', auth_views.login, {'template_name': 'registration/fullscreen_login.html'}, name='login'),
+    url(r'^login/$', auth_views.login, {'template_name': 'registration/login.html'}, name='login'),
     url(r'^password_reset/$', auth_views.password_reset, {'template_name': 'registration/password_reset_form.html'}, name='password_reset'),
     url(r'^logout/$', views.logout_crm, name="logout"),
     #mycrm views
