@@ -2,206 +2,205 @@
 {% load staticfiles %}
 
 {% block header %}
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-
-        h3 {
-            font-family: Arial;
-        }
-
-        .nav .nav-tabs {
-            font-family: Arial;
-            color: blue;
-        }
-
-        .st1 {
-            color: #000000;
-            background-color: #8e918e;
-        }
-
-    </style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    
+    .nav .nav-tabs {
+        font-family: Arial;
+        color: blue;
+    }
+    
+    /* comment style on comments page */
+    
+    .comment{
+        background-color: #646464;
+        color: #ffffff;
+        /* Top Right Bottom Left */
+        padding: 4% 6% 5% 4%;
+        font-family: Arial;
+        margin: 10px;
+        border: 2px solid rgb(199, 199, 199);
+        /* round border */
+        border-radius: 6px;
+    }
+    
+    .secondary {
+        background: none;
+        color: #d4e7ff;
+        padding-top: 8%;
+    }
+    
+    .delete-form{
+        padding-top: 2%;
+        padding-left: 85%;
+    }
+    
+    .comment-form{
+        margin: 10px;
+        padding-bottom: 30px;
+    }
+    
+</style>
 {% endblock %}
 
 {% block sidebar_content %}
-    {% include '_companies_bar.html' %}
+{% include '_companies_bar.html' %}
 {% endblock %}
 
 {% block content %}
+<h2>Company details:</h2>
+<!-- Nav tabs menu -->
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#about" role="tab">About</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#contactlist" role="tab">Contact list</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#orderlist" role="tab">Order List</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#comments" role="tab">Comments</a>
+    </li>
+</ul>
 
-    <p>{% static 'css/style.css' %}</p>
-
-    <h2>Company details:</h2>
-
-
-
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#home" role="tab">About</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Contact list</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#messages" role="tab">Order List</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#comments" role="tab">Comments</a>
-        </li>
-    </ul>
-
-    <!-- Tab panes -->
-    <div class="tab-content">
-        <div class="tab-pane active" id="home" role="tabpanel">
-            <div class="container-fluid jumbotron">
-                <div>
-                    <h2 class="text-center">Company name: </h2>
-                    <h3 class="text-center">{{ company }}</h3>
-                    <h2 class="text-center">Logo:</h2>
-                    <div class="text-center" style="padding-bottom: 22px; padding-top=22px;">
-                        <img class="img rounded text-center" onerror="this.src='{% static 'img/no_image.png' %}';"
-                             alt="ghf"
-                             height="200"
-                             src="{{ company.picture }}"/>
-                    </div>
-                    <p>
+<!-- About tab -->
+<div class="tab-content">
+    <div class="tab-pane active" id="about" role="tabpanel">
+        <div class="container-fluid jumbotron">
+            <div>
+                <h2 class="text-center">Company name: </h2>
+                <h3 class="text-center">{{ company }}</h3>
+                <h2 class="text-center">Logo:</h2>
+                <div class="text-center" style="padding-bottom: 22px; padding-top=22px;">
+                    <img class="img rounded text-center" onerror="this.src='{% static 'img/no_image.png' %}';"
+                    alt="ghf"
+                    height="200"
+                    src="{{ company.picture }}"/>
+                </div>
+                <p>
                     <h2 class="text-center">About company:</h2>
                     <h3 class="text-center">{{ company.description }}</h3>
-                    </p>
-                    <h2 class="text-center">Number of employees</h2>
-                    <h3 class="text-center">{{ company.businesscard_set.count }}</h3>
-                </div>
+                </p>
+                <h2 class="text-center">Number of employees</h2>
+                <h3 class="text-center">{{ company.businesscard_set.count }}</h3>
             </div>
         </div>
-        <div class="tab-pane" id="profile" role="tabpanel">
-            
-            <table class="table">
-                <thead>
+    </div>
+    <div class="tab-pane" id="contactlist" role="tabpanel">
+        
+        <table class="table">
+            <thead>
                 <tr>
                     <th>#</th>
                     <th>contact name</th>
                     <th>phone number</th>
                 </tr>
-                </thead>
-                <tbody>
+            </thead>
+            <tbody>
                 {% for card in company.businesscard_set.all %}
-                    <tr class="active">
-                        <td>{{ forloop.counter }}</td>
-                        <td><a class="btn btn-light" href="{% url 'mycrm:edit_contact' card.pk %}"><i
-                                class="fa fa-address-card-o" aria-hidden="true"></i></a>
-                            <a class="btn btn-primary" href="{% url 'mycrm:delete_contact' card.pk %}"
-                               role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                            {{ card.name }} {{ card.last_name }} </td>
+                <tr class="active">
+                    <td>{{ forloop.counter }}</td>
+                    <td><a class="btn btn-light" href="{% url 'mycrm:edit_contact' card.pk %}"><i
+                        class="fa fa-address-card-o" aria-hidden="true"></i></a>
+                        <a class="btn btn-primary" href="{% url 'mycrm:delete_contact' card.pk %}"
+                        role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        {{ card.name }} {{ card.last_name }} </td>
                         <td>{{ card.phone }}</td>
                     </tr>
-                {% endfor %}
+                    {% endfor %}
                 </tbody>
             </table>
-
+            
+            <!-- orderlist tab  -->
         </div>
-        <div class="tab-pane" id="messages" role="tabpanel">
+        <div class="tab-pane" id="orderlist" role="tabpanel">
             <table class="table">
                 <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Value</th>
-                    <th>Payment status</th>
-                    <th>date created</th>
-                    <th>Finished</th>
-                </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Value</th>
+                        <th>Payment status</th>
+                        <th>date created</th>
+                        <th>Finished</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {% for order in company.order_set.all %}
+                    {% for order in company.order_set.all %}
                     <tr class="active">
                         <td>{{ forloop.counter }}</td>
                         <td>
                             <a class="btn btn-primary" href="{% url 'mycrm:order_edit' order.pk %}"
-                               role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                            role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                             {{ order.name }}
                         </td>
                         <td>{{ order.description }}</td>
                         <td>{{ order.value }}</td>
                         <td>
                             {% if order.payment_status %}
-                                <img src="{% static 'img/ok.png' %}"/>
+                            <img src="{% static 'img/ok.png' %}"/>
                             {% else %}
-                                <img src="{% static 'img/nok.png' %}"/>
+                            <img src="{% static 'img/nok.png' %}"/>
                             {% endif %}
                         </td>
                         <td>{{ order.date_created }}</td>
                         <td>
                             {% if order.project_is_finished %}
-                                <img src="{% static 'img/ok.png' %}"/>
+                            <img src="{% static 'img/ok.png' %}"/>
                             {% else %}
-                                <img src="{% static 'img/nok.png' %}"/>
+                            <img src="{% static 'img/nok.png' %}"/>
                             {% endif %}
-
+                            
                         </td>
                     </tr>
-                {% endfor %}
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
-
+        
         <!-- comment tab -->
         <div class="tab-pane" id="comments" role="tabpanel">
-
-            <table class="table">
-                    <thead>
-                    <tr align="center">
-                            <th>
-                                <form method="get">
-                                    {% csrf_token %}
-                                        <div class="form-group">
-                                          <label class="col-form-label" for="formGroupExampleInput">Title</label>
-                                          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input" name="title">
-                                        </div>
-                                        <div class="form-group">
-                                          <label class="col-form-label" for="formGroupExampleInput2">Comment</label>
-                                          <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input" name="comm">
-                                        </div>
-                                        <input type="submit" class="btn btn-primary" value="Submit comment">
-                                </form>
-                            </th>
-                        <!-- <th>Comment</th>  -->
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {% for comment in comments %}
-                        <tr align="center">
-                            <td>
-                                <div class="jumbotron">
-                                    <h3>{{ comment.title }}</h3>
-                                    <div class="col-sm-3">{{ comment.comment }}</div> 
-                                    <!-- deletebutton -->
-                                    <div align="right">
-                                    <form method="get">
-                                        <button type="submit" align="left" class="btn btn-primary" name="delete_comment" value="{{comment.pk}}">Delete</button>
-                                    </form>
-                                </div>
-                                    <div align="left"> 
-                                        <a class="text-muted">Date: {{ comment.date }}</a> 
-                                        <a class="text-muted">Useer: {{ comment.user }}</a> 
-                                        
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-
-
-
+            
+            <form class="comment-form" method="get">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="col-form-label" for="formGroupExampleInput">Title</label>
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input" name="title">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="formGroupExampleInput2">Comment</label>
+                    <textarea rows="5" type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input" name="comm"></textarea>
+                </div>
+                <input type="submit" class="btn btn-primary" value="Submit comment">
+            </form>
+            
+            {% for comment in comments %}
+            
+            <div class="jumbotron comment">
+                <h3>{{ comment.title }}</h3>
+                <div class="col-sm-3">{{ comment.comment }}</div> 
+                <!-- deletebutton -->
+                <div align="right">
+                    <form method="get">
+                        <button type="submit" align="left" class="btn btn-danger" name="delete_comment" value="{{comment.pk}}">Delete</button>
+                    </form>
+                </div>
+                <div align="left"> 
+                    <a class="secondary">Date: {{ comment.date }}</a> 
+                    <a class="secondary">User: {{ comment.user }}</a> 
+                    
+                </div>
+            </div> 
+            {% endfor %}            
         </div>
-
+        
     </div>
-
-
-
-
-
-{% endblock %}
+    
+    
+    
+    
+    
+    {% endblock %}
