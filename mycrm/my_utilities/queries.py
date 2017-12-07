@@ -2,6 +2,10 @@ from mycrm.models import *
 from textwrap import wrap
 
 def get_companies_report_text():
+    '''
+    Function for report generation, gets all data from compatnies and builds list of lines to save in file
+    :return: list() of strings
+    '''
     companies = Company.objects.all()
     lines = []
     lines.append('~~~~~~~~~~~~~~~~~~~~~~SUMMARY~~~~~~~~~~~~~~~~~~~~~~~~~~~~')

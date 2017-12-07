@@ -1,3 +1,7 @@
+'''
+mycrm all views
+'''
+
 #core Django imports
 from django.contrib import messages
 from django.contrib.sessions.backends.db import SessionStore
@@ -9,10 +13,12 @@ from django.views.generic.edit import UpdateView, DeleteView
 from django.contrib.auth import logout
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 #Import from current app
 import mycrm.models as models
 import mycrm.forms as forms
+from logger import logger
 
 #Third party libraries import
 from reportlab.pdfgen import canvas
@@ -23,32 +29,6 @@ from mycrm.my_utilities import queries
 
 session = SessionStore()
 
-def logout_crm(request):
-    '''
-    logout current user
-    /mycrm/logout
-    '''
-    logout(request)
-    return render(request, 'logout.html')
-
-def company_report(request):
-    '''
-    create pdf report
-    company/report
-    '''
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
-    p = canvas.Canvas(response, initialFontName='Times-Roman')
-    lines = queries.get_companies_report_text()
-
-    page_size = 35
-    space = 20
-    for i,line in enumerate(lines):
-        p.drawString(50, 800-(i % page_size)*space, line)
-        if (i+1) % page_size == 0:
-            p.showPage()
-    p.save()
-    return response
 
 class UpdateViewWithMessage(UpdateView):
     '''
@@ -95,8 +75,38 @@ class CreateViewWithMessage(CreateView):
         return super().form_valid(form)
 
 
+@login_required
+def logout_crm(request):
+    '''
+    logout current user
+    /mycrm/logout
+    '''
+    logout(request)
+    return render(request, 'logout.html')
 
-class UsersList(ListView):
+
+@login_required
+def company_report(request):
+    '''
+    create pdf report
+    company/report
+    '''
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+    p = canvas.Canvas(response, initialFontName='Times-Roman')
+    lines = queries.get_companies_report_text()
+
+    page_size = 35
+    space = 20
+    for i,line in enumerate(lines):
+        p.drawString(50, 800-(i % page_size)*space, line)
+        if (i+1) % page_size == 0:
+            p.showPage()
+    p.save()
+    return response
+
+
+class UsersList(LoginRequiredMixin, ListView):
     '''
     page with users table
     mycrm/user/
@@ -106,7 +116,7 @@ class UsersList(ListView):
     model = User
 
 
-class RegisterUser(CreateViewWithMessage):
+class RegisterUser(LoginRequiredMixin, CreateViewWithMessage):
     '''
     registration page
     mycrm/user/register
@@ -206,6 +216,39 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
     '''
     model = models.Company
     template_name = 'company/company_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = models.Comment.objects.all()
+        print(kwargs)
+        print(context)
+        return context
+
+    def get(self, request, *args, **kwargs):
+        get = request.GET
+        if get and 'comm' in get and 'title' in get:
+            logger.info('ADDING COMMENT ...')
+            logger.info('REQEST ->   {}'.format(request))
+            logger.info('kwargs  {} user {} '.format(kwargs, request.user))
+            title = request.GET['title']
+            comm = request.GET['comm']
+            current_company = models.Company.objects.get(pk=kwargs['pk'])
+            #pk mam w request current_company.comment_set - comment_set.comment - wyciągam coś z comment
+            comment = models.Comment(company=current_company, user=request.user, title=title, comment=comm)
+            comment.save()
+            logger.info('comment content :{}'.format(comment))
+
+        if get and 'delete_comment' in get:
+            logger.info('DELETING COMMENT ...')
+            logger.info('comment clicked id {}'.format(get['delete_comment']))
+            try:
+                current_comment = models.Comment.objects.get(pk=get['delete_comment'])
+                logger.info(current_comment)
+                current_comment.delete()
+            except:
+                logger.error('no comment with corresponding ID')
+
+        return super().get(kwargs, *args, **kwargs)
 
 
 class CompanyAdd(LoginRequiredMixin, CreateViewWithMessage):
