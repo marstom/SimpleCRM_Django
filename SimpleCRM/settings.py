@@ -10,9 +10,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
-import os
-from django.contrib.messages import constants as messages
 
+#standard library
+import logging
+import os
+
+#Django imports
+from django.contrib.messages import constants as messages
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+from logger import logger
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -135,6 +144,26 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
+#after login
+LOGIN_REDIRECT_URL = '/mycrm'
+
+#Email config for reseting password
+#TODO o2.pl email not works, fix it
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = 'poczta.o2.pl'
+# SERVER_EMAIL = 'jan2345@o2.pl'
+# EMAIL_HOST = 'poczta.o2.pl'
+# EMAIL_PORT = 465
+# EMAIL_HOST_USER = 'jan2345@o2.pl'
+# EMAIL_HOST_PASSWORD = '!paprotka123'
+# EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+
+# EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+# EMAIL_HOST = 'jan2345@o2.pl'
+# EMAIL_PORT = 465
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -152,8 +181,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+#TODO change static root
+# MEDIA_URL = ''
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'public', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'mycrm', 'static'),
+]
+
+#for debug purposes
+logger.info(STATIC_URL)
+logger.info('static root {}'.format(STATIC_ROOT))
+logger.info('static file dirs {}'.format(STATICFILES_DIRS))
+logger.info('there are following templates -> \n{}'.format(TEMPLATES))
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4' #Crispy theme
 
