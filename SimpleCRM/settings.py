@@ -17,11 +17,13 @@ import os
 
 #Django imports
 from django.contrib.messages import constants as messages
-from django.conf import settings
-from django.conf.urls.static import static
 
-
+#local imports
 from logger import logger
+try:
+    import local
+except:
+    logger.warning('You need add local.py file with local settings ... ')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -34,7 +36,7 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '0g51-soryk$47_+-n5^jyta0)2$&$eq$$dssh_@s-i8$@#l=a+'
+SECRET_KEY = local.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,8 +44,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 INTERNAL_IPS = ('127.0.0.1',)
 
-# Application definition
 
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -72,7 +74,7 @@ ROOT_URLCONF = 'SimpleCRM.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['mycrm/templates',],
+        'DIRS': ['./mycrm/templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -91,25 +93,6 @@ WSGI_APPLICATION = 'SimpleCRM.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'mycrm',
-#         'USER': 'tomeks',
-#         'PASSWORD': 'asdf',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -118,7 +101,6 @@ DATABASES = {
         },
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -151,33 +133,20 @@ MESSAGE_TAGS = {
 LOGIN_REDIRECT_URL = '/mycrm'
 
 #Email config for reseting password
-#TODO o2.pl email not works, fix it
-# EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = 'poczta.o2.pl'
-# SERVER_EMAIL = 'jan2345@o2.pl'
-# EMAIL_HOST = 'poczta.o2.pl'
-# EMAIL_PORT = 465
-# EMAIL_HOST_USER = 'jan2345@o2.pl'
-# EMAIL_HOST_PASSWORD = '!paprotka123'
-# EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = local.EMAIL
+EMAIL_HOST_PASSWORD = local.EMAIL_PASSWORD
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
-# EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
-# EMAIL_HOST = 'jan2345@o2.pl'
-# EMAIL_PORT = 465
+#Only console
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.11/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -187,7 +156,7 @@ USE_TZ = True
 #TODO change static root
 # MEDIA_URL = ''
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'SimpleCRM/static')
+STATIC_ROOT = os.path.join(BASE_DIR, '')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
