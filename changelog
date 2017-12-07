@@ -2,6 +2,8 @@ v0.4
 -Problem with missing templates on server fixed, server project root is home/ but local project root is /home/mycrm
 -user can now add comment
 -simplecrmmailing, app send email to users forget password action,
+-better looking comments page
+-there is local.py file with secret content like passwords, never commit it to repository
 
 Bugs:
 -Many commits on master branch dissapear ...

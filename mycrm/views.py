@@ -219,7 +219,10 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comments'] = models.Comment.objects.all()
+        # context['comments'] = models.Comment.objects.all()
+        current_company = context['object']
+        context['comments'] = current_company.comment_set.all()
+        logger.info(context['comments'])
         print(kwargs)
         print(context)
         return context
@@ -229,10 +232,11 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
         if get and 'comm' in get and 'title' in get:
             logger.info('ADDING COMMENT ...')
             logger.info('REQEST ->   {}'.format(request))
-            logger.info('kwargs  {} user {} '.format(kwargs, request.user))
+            logger.info('kwargs  {} user {} args {}'.format(kwargs, request.user, args))
             title = request.GET['title']
             comm = request.GET['comm']
             current_company = models.Company.objects.get(pk=kwargs['pk'])
+            # current_company = self.get_context_data()['object'] #not works
             #pk mam w request current_company.comment_set - comment_set.comment - wyciągam coś z comment
             comment = models.Comment(company=current_company, user=request.user, title=title, comment=comm)
             comment.save()
