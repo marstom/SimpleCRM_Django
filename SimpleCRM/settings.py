@@ -72,7 +72,7 @@ ROOT_URLCONF = 'SimpleCRM.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['./templates',],
+        'DIRS': ['mycrm/templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -187,16 +187,18 @@ USE_TZ = True
 #TODO change static root
 # MEDIA_URL = ''
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'SimpleCRM/static')
 
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'mycrm', 'static'),
 ]
 
 TEMPLATE_DIRS = (
-    PROJECT_PATH + '/templates/',
-    PROJECT_PATH + '/mycrm/templates/',
+    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'mycrm','templates'),
 )
+
 
 #for debug purposes
 logger.info(STATIC_URL)
