@@ -14,6 +14,7 @@ from django.contrib.auth import logout
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.db.models.functions import Coalesce
 
 #Import from current app
 import mycrm.models as models
@@ -221,10 +222,9 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         # context['comments'] = models.Comment.objects.all()
         current_company = context['object']
-        context['comments'] = current_company.comment_set.all()
+        nonordered_comments = current_company.comment_set.all()
+        context['comments'] = nonordered_comments.order_by(Coalesce('date', 'pk').desc())
         logger.info(context['comments'])
-        print(kwargs)
-        print(context)
         return context
 
     def get(self, request, *args, **kwargs):
