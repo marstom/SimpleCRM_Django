@@ -1,3 +1,12 @@
+08.12.2017
+-logger for debug,
+-logger for user activities,
+-comments are sorted, newest at the top
+
+
+
+
+
 v0.4
 -Problem with missing templates on server fixed, server project root is home/ but local project root is /home/mycrm
 -user can now add comment
@@ -7,3 +16,4 @@ v0.4
 
 Bugs:
 -Many commits on master branch dissapear ...
+

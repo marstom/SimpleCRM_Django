@@ -19,7 +19,7 @@ from django.db.models.functions import Coalesce
 #Import from current app
 import mycrm.models as models
 import mycrm.forms as forms
-from logger import logger
+from logger import logger, logger_user_activity
 
 #Third party libraries import
 from reportlab.pdfgen import canvas
@@ -248,6 +248,7 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
             try:
                 current_comment = models.Comment.objects.get(pk=get['delete_comment'])
                 logger.info(current_comment)
+                logger_user_activity.info('User {} has deleted comment {} {}.'.format(self.request.user, current_comment.title, current_comment.comment))
                 current_comment.delete()
             except:
                 logger.error('no comment with corresponding ID')
