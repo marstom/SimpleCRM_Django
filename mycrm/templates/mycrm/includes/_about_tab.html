@@ -1,0 +1,20 @@
+{% load staticfiles %}
+<div class="container-fluid jumbotron">
+        <div>
+            <h2 class="text-center">Company name: </h2>
+            <h3 class="text-center">{{ company }}</h3>
+            <h2 class="text-center">Logo:</h2>
+            <div class="text-center" style="padding-bottom: 22px; padding-top=22px;">
+                <img class="img rounded text-center" onerror="this.src='{% static 'img/no_image.png' %}';"
+                alt="ghf"
+                height="200"
+                src="{{ company.picture }}"/>
+            </div>
+            <p>
+                <h2 class="text-center">About company:</h2>
+                <h3 class="text-center">{{ company.description }}</h3>
+            </p>
+            <h2 class="text-center">Number of employees</h2>
+            <h3 class="text-center">{{ company.businesscard_set.count }}</h3>
+        </div>
+    </div>   

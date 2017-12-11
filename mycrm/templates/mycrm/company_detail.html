@@ -14,7 +14,7 @@
 
 <div class="container-fluid">
 
-
+<div class="tabs">
 
 <div class="row">
 
@@ -26,7 +26,7 @@
                     </div>
                     <div class="mr-5">About</div>
                 </div>
-                <a class="card-footer text-white clearfix small z-1" href="#">
+                <a class="card-footer text-white clearfix small z-1" href="#about">
                     <span class="float-left">View Details</span>
                     <span class="float-right">
                         <i class="fa fa-angle-right"></i>
@@ -42,7 +42,7 @@
                     </div>
                     <div class="mr-5">num Contacts</div>
                 </div>
-                <a class="card-footer text-white clearfix small z-1" href="#">
+                <a class="card-footer text-white clearfix small z-1" href="#contacts">
                     <span class="float-left">View Details</span>
                     <span class="float-right">
                         <i class="fa fa-angle-right"></i>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="mr-5">num Orders</div>
                 </div>
-                <a class="card-footer text-white clearfix small z-1" href="#">
+                <a class="card-footer text-white clearfix small z-1" href="#orders">
                     <span class="float-left">View Details</span>
                     <span class="float-right">
                         <i class="fa fa-angle-right"></i>
@@ -75,7 +75,7 @@
                         </div>
                         <div class="mr-5">num Comments</div>
                     </div>
-                    <a class="card-footer text-white clearfix small z-1" href="#">
+                    <a class="card-footer text-white clearfix small z-1" href="#comments">
                         <span class="float-left">View Details</span>
                         <span class="float-right">
                             <i class="fa fa-angle-right"></i>
@@ -83,34 +83,56 @@
                     </a>
                 </div></div>
     </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    <div class="container-fluid jumbotron">
-        <div>
-            <h2 class="text-center">Company name: </h2>
-            <h3 class="text-center">{{ company }}</h3>
-            <h2 class="text-center">Logo:</h2>
-            <div class="text-center" style="padding-bottom: 22px; padding-top=22px;">
-                <img class="img rounded text-center" onerror="this.src='{% static 'img/no_image.png' %}';"
-                alt="ghf"
-                height="200"
-                src="{{ company.picture }}"/>
-            </div>
-            <p>
-                <h2 class="text-center">About company:</h2>
-                <h3 class="text-center">{{ company.description }}</h3>
-            </p>
-            <h2 class="text-center">Number of employees</h2>
-            <h3 class="text-center">{{ company.businesscard_set.count }}</h3>
+
+    <div class="tab-content">
+        <div id="about" class="tab active">
+            {% include "mycrm/includes/_about_tab.html" %}
         </div>
-    </div>        
+        
+        <div id="contacts" class="tab">
+                {% include "mycrm/includes/_contacts_tab.html" %}
+        </div>
+        <div id="orders" class="tab">
+                {% include "mycrm/includes/_orders_tab.html" %}
+        </div>
+        <div id="comments" class="tab">
+                {% include "mycrm/includes/_comments_tab.html" %}
+        </div>
+    </div>
+
+</div> <!-- tabs -->
+    
+    
+    
+    
+    
+    
+    
+     
     
 </div>
     {% endblock %}
-    
+
+    {% block js %}
+
+    <script>
+        jQuery(document).ready(function() {
+            //first show only about
+            jQuery('.tabs ' + '#about').show().siblings().hide();
+            jQuery('a').on('click', function(e)  {
+                var currentAttrValue = jQuery(this).attr('href');
+            
+                // Show/Hide Tabs
+                jQuery('.tabs ' + currentAttrValue).show().siblings().hide();
+            
+                // Change/remove current tab to active
+                jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
+            
+                e.preventDefault();
+                console.log('curr:'+currentAttrValue);
+            });
+            
+        });
+
+    </script>
+    {% endblock %}
