@@ -213,7 +213,13 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
     '''
     company detail view:
     description, contacts table, orders table
+    comments - variable ith all comments sorted by date
+    has count variables for using in template:
+    comments_count
+    contacts_count
+    order_count
     mycrm/company/<company_id>/
+
     '''
     model = models.Company
     template_name = 'mycrm/company_detail.html'
@@ -224,6 +230,9 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
         current_company = context['object']
         nonordered_comments = current_company.comment_set.all()
         context['comments'] = nonordered_comments.order_by(Coalesce('date', 'pk').desc())
+        context['comments_count'] = current_company.comment_set.count()
+        context['contacts_count'] = current_company.businesscard_set.count()
+        context['order_count'] = current_company.order_set.count()
         logger.info(context['comments'])
         return context
 

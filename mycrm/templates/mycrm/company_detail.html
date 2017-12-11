@@ -1,6 +1,49 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block head %}
+
+<style>
+        
+        .nav .nav-tabs {
+            font-family: Arial;
+            color: blue;
+        }
+        
+        /* comment style on comments page */
+        
+        .comment{
+            background-color: #646464;
+            color: #ffffff;
+            /* Top Right Bottom Left */
+            padding: 4% 6% 5% 4%;
+            font-family: Arial;
+            margin: 10px;
+            border: 2px solid rgb(199, 199, 199);
+            /* round border */
+            border-radius: 6px;
+        }
+        
+        .secondary {
+            background: none;
+            color: #d4e7ff;
+            padding-top: 8%;
+        }
+        
+        .delete-form{
+            padding-top: 2%;
+            padding-left: 85%;
+        }
+        
+        .comment-form{
+            margin: 10px;
+            padding-bottom: 30px;
+        }
+        
+    </style>
+    
+{% endblock %}
+
 {% block breadcrumb %}
 
 <li class="breadcrumb-item"><a href="{% url 'mycrm:home' %}">Home</a></li>
@@ -40,7 +83,7 @@
                     <div class="card-body-icon">
                         <i class="fa fa-fw fa-list"></i>
                     </div>
-                    <div class="mr-5">num Contacts</div>
+                    <div class="mr-5">{{ contacts_count }} Contacts</div>
                 </div>
                 <a class="card-footer text-white clearfix small z-1" href="#contacts">
                     <span class="float-left">View Details</span>
@@ -56,7 +99,7 @@
                     <div class="card-body-icon">
                         <i class="fa fa-fw fa-shopping-cart"></i>
                     </div>
-                    <div class="mr-5">num Orders</div>
+                    <div class="mr-5">{{ order_count }} Orders</div>
                 </div>
                 <a class="card-footer text-white clearfix small z-1" href="#orders">
                     <span class="float-left">View Details</span>
@@ -73,7 +116,7 @@
                         <div class="card-body-icon">
                             <i class="fa fa-fw fa-comment"></i>
                         </div>
-                        <div class="mr-5">num Comments</div>
+                        <div class="mr-5">{{ comments_count }} Comments</div>
                     </div>
                     <a class="card-footer text-white clearfix small z-1" href="#comments">
                         <span class="float-left">View Details</span>
@@ -101,20 +144,13 @@
     </div>
 
 </div> <!-- tabs -->
-    
-    
-    
-    
-    
-    
-    
      
     
 </div>
     {% endblock %}
 
     {% block js %}
-
+    {% comment %} using for switching tabs {% endcomment %}
     <script>
         jQuery(document).ready(function() {
             //first show only about

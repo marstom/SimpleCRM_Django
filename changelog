@@ -1,3 +1,8 @@
+11.12.2017
+-new look, sb-admin theme,
+-detail page has count elements
+-detail page with tabs in jquery, working without page reload
+
 08.12.2017
 -logger for debug,
 -logger for user activities,

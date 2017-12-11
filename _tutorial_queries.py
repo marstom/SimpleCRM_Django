@@ -46,5 +46,13 @@ def sorting_queries1():
     print('______________________________________________')
 
 
-sorting_queries1()
+def count_elements():
+    from mycrm import models
+    print('______________________________________________')
+    firmaA = models.Company.objects.get(pk=2)
+    com = firmaA.comment_set.count()
+    print(com)
+    print('______________________________________________')
 
+# sorting_queries1()
+count_elements()

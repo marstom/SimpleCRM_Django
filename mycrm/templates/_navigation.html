@@ -11,6 +11,7 @@
                     <span class="nav-link-text">User</span>
                 </a>
             </li>
+            {% if request.user.is_superuser %}
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-wrench"></i>
@@ -25,6 +26,9 @@
                     </li>
                 </ul>
             </li>
+            {% else %}
+            
+            {% endif %}
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-file"></i>
