@@ -1,42 +1,35 @@
+{% extends "base_layout.html" %}
 
-{% load staticfiles %}
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>SB Admin - Start Bootstrap Template</title>
-    <!-- Bootstrap core CSS-->
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <!-- Custom fonts for this template-->
-    <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
-    
-    <!-- Page level plugin CSS-->
-    <link href="{% static 'vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
-    
-    <!-- Custom styles for this template-->
-    <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
-    
-    {% block head %}
-    <!-- head - additional header content -->
-    {% endblock %}
-    
-</head>
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
-    
+{% block basecontent %}
     {% include "_navigation.html" %}
-    
     <div class="content-wrapper">
-        {% block content %}
+
         <!-- content - Page content -->
-        {% endblock %}
-        {% include "_test_content.html" %}
+
+        {% comment %} {% include "_test_content.html" %} {% endcomment %}
         
+        <ol class="breadcrumb">
+        {% block breadcrumb %}
+        <!-- here is breadcumb view -->
+        {% endblock %}
+        </ol>
+
+            <!-- messages -->
+            <div>
+                {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            <!-- end messages -->
+
+        {% block content %}
+        <!-- content - base view for html with side menus -->
+        {% endblock %}
         
         <!-- /.container-fluid-->
         <!-- /.content-wrapper-->
@@ -64,33 +57,11 @@
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a><!-- Logout button screen button -->
+                        <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a><!-- Logout button screen button -->
                     </div>
                 </div>
             </div>
         </div>
         
     </div>
-    
-    <!-- Bootstrap core JavaScript-->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-    <!-- Page level plugin JavaScript-->
-    <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
-    <script src="{% static 'vendor/datatables/jquery.dataTables.js' %}"></script>
-    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.js' %}"></script>
-    <!-- Custom scripts for all pages-->
-    <script src="{% static 'js/sb-admin.min.js' %}"></script>
-    <!-- Custom scripts for this page-->
-    <script src="{% static 'js/sb-admin-datatables.min.js' %}"></script>
-    <script src="{% static 'js/sb-admin-charts.min.js' %}"></script>
-    
-    {% block js %}
-    <!-- js - additional java script here -->
-    {% endblock %}
-</body>
-
-
-</html>
+{% endblock %}

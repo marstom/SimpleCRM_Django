@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block breadcrumb %}
+
+<li class="breadcrumb-item"><a href="{% url 'mycrm:home' %}">Home</a></li>
+<li class="breadcrumb-item active">Company</li>
+<li class="breadcrumb-item active">Add</li>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+        <div class="card mx-auto mt-5">
+          <div class="card-header">Add new company</div>
+          <div class="card-body">
+                <form method="post" action="" id="id-exampleForm">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <input type="submit" value="Submit" class="btn btn-primary"/>
+                    </form>
+                <div class="text-center">
+            </div>
+          </div>
+        </div>
+      </div>
+    
+{% endblock %}

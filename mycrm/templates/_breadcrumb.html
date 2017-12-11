@@ -1,7 +1,23 @@
-<!-- Breadcrumbs-->
+{% comment %} <!-- Breadcrumbs-->
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
         <a href="#">Dashboard</a>
     </li>
     <li class="breadcrumb-item active">My Dashboard</li>
 </ol>
+ {% endcomment %}
+
+
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Dashboards</a>
+        </li>
+        <li class="breadcrumb-item active">My Dashboard</li>
+    </ol>
+    <p>{% url 'mycrm:user' %}</p>
+
+
+{% comment %} 
+bread crumb using template for-loop:
+{% endcomment %}

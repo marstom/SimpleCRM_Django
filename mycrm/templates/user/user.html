@@ -1,8 +1,67 @@
 {% extends 'base.html' %}
 
+{% block breadcrumb %}
+
+        <li class="breadcrumb-item"><a href="{% url 'mycrm:home' %}">Home</a></li>
+        <li class="breadcrumb-item active">User</li>
+    
+{% endblock %}
 
 {% block content %}
 
-<p> Page content user.html </p>
-
-{% endblock %}
+<!-- Table with users -->
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-table"></i> Active users in CRM system:</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>Login</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>e-mail</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                                <th>id</th>
+                                <th>Login</th>
+                                <th>First name</th>
+                                <th>Last name</th>
+                                <th>e-mail</th>
+                                <th>Actions</th>
+                            </tr>
+                    </tfoot>
+                    <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ user }}</td>
+                                <td>{{ user.first_name }}</td>
+                                <td>{{ user.last_name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    <a class="btn btn-primary" href="{% url 'mycrm:user_edit' user.pk %}" role="button"><i
+                                            class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    <a class="btn btn-primary" href="{% url 'mycrm:user_delete' user.pk %}" role="button"><i
+                                            class="fa fa-trash" aria-hidden="true"></i></a>
+                
+                                </td>
+                            </tr>
+                        {% endfor %}
+                
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+    </div>
+    
+    
+    
+    {% endblock %}
+    

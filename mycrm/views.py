@@ -124,7 +124,7 @@ class RegisterUser(LoginRequiredMixin, CreateViewWithMessage):
     '''
     form_class = forms.SignUpForm
     model = User #user from django
-    template_name = 'user/register_user.html'
+    template_name = 'mycrm/user_register.html'
     success_url = reverse_lazy('mycrm:user')
     my_message = 'User created succesfully!'
 
@@ -136,7 +136,7 @@ class UserEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessag
     permission_required = 'auth.change_user'
     form_class = forms.EditUserForm
     model = User
-    template_name = 'update_view.html'
+    template_name = 'mycrm/update_view.html'
     success_url = reverse_lazy('mycrm:user')
     my_message = 'Update user succesfully'
     page_title = 'Edit User:'
@@ -149,11 +149,11 @@ class UserDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMess
     '''
     permission_required = 'auth.delete_user'
     model = User
-    template_name = 'delete_view.html'
+    template_name = 'mycrm/delete_view.html'
     success_url = reverse_lazy('mycrm:user')
     my_message = 'You delete user succesfully!'
     page_title = 'Delete user'
-    page_text = 'Are you sure delete user?'
+    page_text = 'Are you sure delete user'
 
 
 class CompaniesListView(LoginRequiredMixin, ListView):
@@ -162,7 +162,7 @@ class CompaniesListView(LoginRequiredMixin, ListView):
     mycrm/company
     '''
     model = models.Company
-    template_name = 'company/company.html'
+    template_name = 'mycrm/company.html'
 
     def get_context_data(self, **kwargs):
         context = super(CompaniesListView, self).get_context_data(**kwargs)
@@ -189,7 +189,7 @@ class CompanyUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithM
     permission_required = 'mycrm.change_company'
     form_class = forms.CompanyForm
     model = models.Company
-    template_name = 'update_view.html'
+    template_name = 'mycrm/update_view.html'
     success_url = reverse_lazy('mycrm:company')
     my_message = 'You change company data succesfully!'
     page_title = 'Edit company:'
@@ -203,7 +203,7 @@ class CompanyDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithM
     permission_required = 'mycrm.delete_company'
     model = models.Company
     success_url = reverse_lazy('mycrm:company')
-    template_name = 'delete_view.html'
+    template_name = 'mycrm/delete_view.html'
     page_title = 'Delete company'
     page_text = 'Are you sure you want delete company:'
     my_message = 'You delete company succesfully!'
@@ -216,7 +216,7 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
     mycrm/company/<company_id>/
     '''
     model = models.Company
-    template_name = 'company/company_detail.html'
+    template_name = 'mycrm/company_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -262,7 +262,7 @@ class CompanyAdd(LoginRequiredMixin, CreateViewWithMessage):
     mycrm/company/add
     '''
     form_class = forms.CompanyForm
-    template_name = 'mycrm/company_form.html'
+    template_name = 'mycrm/company_add.html'
     success_url = reverse_lazy('mycrm:company')
     my_message = 'Add Company Success!'
 
@@ -284,7 +284,7 @@ class ContactEdit(LoginRequiredMixin, UpdateViewWithMessage):
     '''
     form_class = forms.ContactAddForm
     model = models.BusinessCard
-    template_name = 'update_view.html'
+    template_name = 'mycrm/update_view.html'
     success_url = reverse_lazy('mycrm:company')
     my_message = 'You update contact succesfully!'
     page_title = 'Edit contact:'
@@ -298,7 +298,7 @@ class ContactDelete(LoginRequiredMixin, DeleteViewWithMessage):
     model = models.BusinessCard
     success_url = reverse_lazy('mycrm:company')
     my_message = 'You delete contact succesfully!'
-    template_name = 'delete_view.html'
+    template_name = 'mycrm/delete_view.html'
     page_title = 'Delete contact'
     page_text = 'Are you sure you want delete contact:'
     my_message = 'You delete contact succesfully!'
@@ -324,7 +324,7 @@ class OrderEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessa
     permission_required = 'mycrm.change_order'
     form_class = forms.OrderAddForm
     model = models.Order
-    template_name = 'update_view.html'
+    template_name = 'mycrm/update_view.html'
     success_url = reverse_lazy('mycrm:company')
     my_message = 'You update order succesfully!'
     page_title = 'Edit order:'

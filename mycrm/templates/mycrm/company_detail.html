@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block breadcrumb %}
+
+<li class="breadcrumb-item"><a href="{% url 'mycrm:home' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'mycrm:company' %}">Company</a></li>
+<li class="breadcrumb-item active">Details</li>
+
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+
+
+
+<div class="row">
+
+        <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="card text-white bg-primary o-hidden h-100">
+                <div class="card-body">
+                    <div class="card-body-icon">
+                        <i class="fa fa-fw fa-user"></i>
+                    </div>
+                    <div class="mr-5">About</div>
+                </div>
+                <a class="card-footer text-white clearfix small z-1" href="#">
+                    <span class="float-left">View Details</span>
+                    <span class="float-right">
+                        <i class="fa fa-angle-right"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="card text-white bg-warning o-hidden h-100">
+                <div class="card-body">
+                    <div class="card-body-icon">
+                        <i class="fa fa-fw fa-list"></i>
+                    </div>
+                    <div class="mr-5">num Contacts</div>
+                </div>
+                <a class="card-footer text-white clearfix small z-1" href="#">
+                    <span class="float-left">View Details</span>
+                    <span class="float-right">
+                        <i class="fa fa-angle-right"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="card text-white bg-success o-hidden h-100">
+                <div class="card-body">
+                    <div class="card-body-icon">
+                        <i class="fa fa-fw fa-shopping-cart"></i>
+                    </div>
+                    <div class="mr-5">num Orders</div>
+                </div>
+                <a class="card-footer text-white clearfix small z-1" href="#">
+                    <span class="float-left">View Details</span>
+                    <span class="float-right">
+                        <i class="fa fa-angle-right"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+                
+                <div class="card text-white bg-danger o-hidden h-100">
+                    <div class="card-body">
+                        <div class="card-body-icon">
+                            <i class="fa fa-fw fa-comment"></i>
+                        </div>
+                        <div class="mr-5">num Comments</div>
+                    </div>
+                    <a class="card-footer text-white clearfix small z-1" href="#">
+                        <span class="float-left">View Details</span>
+                        <span class="float-right">
+                            <i class="fa fa-angle-right"></i>
+                        </span>
+                    </a>
+                </div></div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="container-fluid jumbotron">
+        <div>
+            <h2 class="text-center">Company name: </h2>
+            <h3 class="text-center">{{ company }}</h3>
+            <h2 class="text-center">Logo:</h2>
+            <div class="text-center" style="padding-bottom: 22px; padding-top=22px;">
+                <img class="img rounded text-center" onerror="this.src='{% static 'img/no_image.png' %}';"
+                alt="ghf"
+                height="200"
+                src="{{ company.picture }}"/>
+            </div>
+            <p>
+                <h2 class="text-center">About company:</h2>
+                <h3 class="text-center">{{ company.description }}</h3>
+            </p>
+            <h2 class="text-center">Number of employees</h2>
+            <h3 class="text-center">{{ company.businesscard_set.count }}</h3>
+        </div>
+    </div>        
+    
+</div>
+    {% endblock %}
+    
