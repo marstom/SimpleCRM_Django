@@ -29,7 +29,7 @@ except:
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 #experimental fix for pythonanywher
-PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+# PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 
 # Quick-start development settings - unsuitable for production
