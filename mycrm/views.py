@@ -317,15 +317,30 @@ class ContactDelete(LoginRequiredMixin, DeleteViewWithMessage):
 
 class OrderAdd(LoginRequiredMixin, PermissionRequiredMixin, CreateViewWithMessage):
     '''
-    Add new contact
-    mycrm/company/addcontact
+    Add new order
+    mycrm/company/<pk>/addorder
     '''
     permission_required = 'mycrm.add_order'
     form_class = forms.OrderAddForm
-    template_name = 'mycrm/order_form.html'
+    template_name = 'mycrm/company_detail_add_order.html'
     success_url = reverse_lazy('mycrm:company')
     my_message = 'Add order succesfull!'
+    context_object_name = 'object'
 
+    # def get_context_data(self, **kwargs):
+    #     ctx = super().get_context_data(**kwargs)
+    #     print(ctx)
+    #     print(kwargs)
+    #     return ctx
+
+    def form_valid(self, form):
+        '''
+        using for set company in form
+        '''
+        # print(form.instance.company)
+        # print(self.kwargs)
+        form.instance.company = models.Company.objects.get(pk=self.kwargs["pk"])
+        return super().form_valid(form)
 
 class OrderEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessage):
     '''

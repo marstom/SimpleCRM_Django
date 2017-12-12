@@ -28,10 +28,13 @@ urlpatterns=[
     url(r'^company/(?P<pk>[0-9]+)/$', views.CompanyDetailView.as_view(), name="detail"),
     url(r'^company/(?P<pk>[0-9]+)/edit/$', views.CompanyUpdate.as_view(), name="company_edit"),
     url(r'^company/(?P<pk>[0-9]+)/delete/$', views.CompanyDelete.as_view(), name="company_delete"),
+    #TODO add company pk here...
     url(r'^company/addcontact', views.ContactAdd.as_view(), name="contact_add"),
     url(r'^company/(?P<pk>[0-9]+)/editcontact', views.ContactEdit.as_view(), name="edit_contact"),
     url(r'^company/(?P<pk>[0-9]+)/deletecontact', views.ContactDelete.as_view(), name="delete_contact"),
-    url(r'^company/addorder', views.OrderAdd.as_view(), name="order_add"),
+    #TODO add company pk here
+    # url(r'^company/addorder', views.OrderAdd.as_view(), name="order_add"),
+    url(r'^company/(?P<pk>[0-9]+)/addorder', views.OrderAdd.as_view(), name="order_add"),    
     url(r'^company/(?P<pk>[0-9]+)/orderedit', views.OrderEdit.as_view(), name="order_edit"),
     url(r'^company/report$', views.company_report, name="company_report"),
 ]

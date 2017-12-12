@@ -62,4 +62,4 @@ class OrderAddForm(forms.ModelForm):
     '''
     class Meta:
         model = Order
-        fields=['name', 'description', 'value', 'payment_status','date_created','project_is_finished','company']
+        fields=['name', 'description', 'value', 'payment_status','date_created','project_is_finished'] #company field update automacicly
