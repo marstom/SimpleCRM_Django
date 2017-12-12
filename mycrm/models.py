@@ -13,8 +13,8 @@ class Company(models.Model):
     '''
     Company data, display on company list
     '''
-    name = models.CharField(max_length=200)
-    description = models.TextField(max_length=2000)
+    name = models.CharField(max_length=50)
+    description = models.TextField(max_length=4500)
     picture = models.CharField(max_length=500, null=True, default=None)
     ranking_position = models.IntegerField(default=0)
 
@@ -30,7 +30,7 @@ class Comment(models.Model):
     Company comment
     related to user and company
     '''
-    title = models.CharField(max_length=255, default=None)
+    title = models.CharField(max_length=128, default=None)
     comment = models.TextField(max_length=4000)
 
     #current time when coment post
@@ -45,11 +45,10 @@ class BusinessCard(models.Model):
     '''
     Business card has user data corresponding to company
     '''
-    name = models.CharField(max_length=500)
-    last_name = models.CharField(max_length=500)
-    phone = models.CharField(max_length=500, validators=[validate_phone])
+    name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=70)
+    phone = models.CharField(max_length=20, validators=[validate_phone])
     company = models.ForeignKey(Company)
-
 
     class Meta:
         verbose_name = 'Business Card'
@@ -58,11 +57,12 @@ class BusinessCard(models.Model):
     def __str__(self):
         return self.name
 
+
 class Order(models.Model):
     '''
     Order has all orders corresponding to one company. Company can have many orders
     '''
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=50)
     description = models.TextField(max_length=2000)
     value = models.DecimalField(max_digits=12, decimal_places=2) #value in euro
     payment_status = models.BooleanField(default=False) #true if client already pait us for order
