@@ -254,9 +254,11 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
         if get and 'delete_comment' in get:
             logger.info('DELETING COMMENT ...')
             logger.info('comment clicked id {}'.format(get['delete_comment']))
+
             try:
                 current_comment = models.Comment.objects.get(pk=get['delete_comment'])
-                logger.info(current_comment)
+                # current_comment = models.Company.comment_set.get(pk=get['delete_comment']) #Why in didn't work??
+                logger.info(current_comment, current_comment.pk)
                 logger_user_activity.info('User {} has deleted comment {} {}.'.format(self.request.user, current_comment.title, current_comment.comment))
                 current_comment.delete()
             except:

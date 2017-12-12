@@ -7,7 +7,7 @@ import logging
 formatter = logging.Formatter('%(asctime)s %(levelname)s: \t %(message)s')
 
 
-def setup_logger(name, log_file, level, console=False):
+def setup_logger(name, log_file, level, console=True):
     """Function setup as many loggers as you want"""
 
     if not console:

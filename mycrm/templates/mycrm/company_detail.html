@@ -23,6 +23,10 @@
             /* round border */
             border-radius: 6px;
         }
+
+        .comment .modal{
+            color: rgb(44, 44, 44);
+        }
         
         .secondary {
             background: none;
@@ -60,7 +64,7 @@
 <div class="tabs">
 
 <div class="row">
-
+        <!-- Colorful tabs -->
         <div class="col-xl-3 col-sm-6 mb-3">
             <div class="card text-white bg-primary o-hidden h-100">
                 <div class="card-body">
@@ -126,7 +130,7 @@
                     </a>
                 </div></div>
     </div>
-
+    <!-- Panels content -->
     <div class="tab-content">
         <div id="about" class="tab active">
             {% include "mycrm/includes/_about_tab.html" %}
