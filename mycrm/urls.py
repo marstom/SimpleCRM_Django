@@ -29,7 +29,8 @@ urlpatterns=[
     url(r'^company/(?P<pk>[0-9]+)/edit/$', views.CompanyUpdate.as_view(), name="company_edit"),
     url(r'^company/(?P<pk>[0-9]+)/delete/$', views.CompanyDelete.as_view(), name="company_delete"),
     #TODO add company pk here...
-    url(r'^company/addcontact', views.ContactAdd.as_view(), name="contact_add"),
+    # url(r'^company/addcontact', views.ContactAdd.as_view(), name="contact_add"),
+    url(r'^company/(?P<pk>[0-9]+)/addcontact', views.ContactAdd.as_view(), name="contact_add"),
     url(r'^company/(?P<pk>[0-9]+)/editcontact', views.ContactEdit.as_view(), name="edit_contact"),
     url(r'^company/(?P<pk>[0-9]+)/deletecontact', views.ContactDelete.as_view(), name="delete_contact"),
     #TODO add company pk here

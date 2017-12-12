@@ -31,6 +31,7 @@ class SignUpForm(auth_forms.UserCreationForm):
         model = auth_models.User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
 
+
 class EditUserForm(forms.ModelForm):
     '''
     Form using in UserEdit view. Edits User django model, can change password login and other data
@@ -47,12 +48,12 @@ class EditUserForm(forms.ModelForm):
 class ContactAddForm(forms.ModelForm):
     '''
     Using for ContactAdd and ContactEdit views. Company contact editing or add
-    mycrm/company/addcontact
+    mycrm/company/<pk>/addcontact
     mycrm/company/<contact_id>/editcontact
     '''
     class Meta:
         model = BusinessCard
-        fields=['name', 'last_name', 'phone', 'company']
+        fields=['name', 'last_name', 'phone'] #company add automaticley
 
 class OrderAddForm(forms.ModelForm):
     '''

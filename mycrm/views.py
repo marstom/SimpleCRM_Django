@@ -284,9 +284,23 @@ class ContactAdd(LoginRequiredMixin, CreateViewWithMessage):
     mycrm/company/addcontact
     '''
     form_class = forms.ContactAddForm
-    template_name = 'mycrm/contact_form.html'
-    success_url = reverse_lazy('mycrm:company')
+    template_name = 'mycrm/company_detail_add_contact.html'
+    # success_url = reverse_lazy('mycrm:company')
     my_message = 'Add Contact successfuly!'
+
+    def form_valid(self, form):
+        '''
+        using for set company in form
+        '''
+        form.instance.company = models.Company.objects.get(pk=self.kwargs["pk"])
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        '''
+        after add back to company page
+        '''
+        return reverse_lazy('mycrm:detail', kwargs={'pk': self.object.company.id})
+
 
 class ContactEdit(LoginRequiredMixin, UpdateViewWithMessage):
     '''
@@ -296,9 +310,14 @@ class ContactEdit(LoginRequiredMixin, UpdateViewWithMessage):
     form_class = forms.ContactAddForm
     model = models.BusinessCard
     template_name = 'mycrm/update_view.html'
-    success_url = reverse_lazy('mycrm:company')
     my_message = 'You update contact succesfully!'
     page_title = 'Edit contact:'
+
+    def get_success_url(self):
+        '''
+        after add back to company page
+        '''
+        return reverse_lazy('mycrm:detail', kwargs={'pk': self.object.company.id})
 
 
 class ContactDelete(LoginRequiredMixin, DeleteViewWithMessage):
@@ -307,12 +326,17 @@ class ContactDelete(LoginRequiredMixin, DeleteViewWithMessage):
     mycrm/company/<contact_id>/deletecontact
     '''
     model = models.BusinessCard
-    success_url = reverse_lazy('mycrm:company')
     my_message = 'You delete contact succesfully!'
     template_name = 'mycrm/delete_view.html'
     page_title = 'Delete contact'
     page_text = 'Are you sure you want delete contact:'
     my_message = 'You delete contact succesfully!'
+
+    def get_success_url(self):
+        '''
+        after add back to company page
+        '''
+        return reverse_lazy('mycrm:detail', kwargs={'pk': self.object.company.id})
 
 
 class OrderAdd(LoginRequiredMixin, PermissionRequiredMixin, CreateViewWithMessage):
@@ -323,24 +347,24 @@ class OrderAdd(LoginRequiredMixin, PermissionRequiredMixin, CreateViewWithMessag
     permission_required = 'mycrm.add_order'
     form_class = forms.OrderAddForm
     template_name = 'mycrm/company_detail_add_order.html'
-    success_url = reverse_lazy('mycrm:company')
+    # success_url = reverse_lazy('mycrm:company')
     my_message = 'Add order succesfull!'
     context_object_name = 'object'
 
-    # def get_context_data(self, **kwargs):
-    #     ctx = super().get_context_data(**kwargs)
-    #     print(ctx)
-    #     print(kwargs)
-    #     return ctx
 
     def form_valid(self, form):
         '''
         using for set company in form
         '''
-        # print(form.instance.company)
-        # print(self.kwargs)
         form.instance.company = models.Company.objects.get(pk=self.kwargs["pk"])
         return super().form_valid(form)
+
+    def get_success_url(self):
+        '''
+        after add back to company page
+        '''
+        return reverse_lazy('mycrm:detail', kwargs={'pk': self.object.company.id})
+
 
 class OrderEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessage):
     '''
@@ -351,6 +375,12 @@ class OrderEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessa
     form_class = forms.OrderAddForm
     model = models.Order
     template_name = 'mycrm/update_view.html'
-    success_url = reverse_lazy('mycrm:company')
+    # success_url = reverse_lazy('mycrm:company')
     my_message = 'You update order succesfully!'
     page_title = 'Edit order:'
+
+    def get_success_url(self):
+        '''
+        after add back to company page
+        '''
+        return reverse_lazy('mycrm:detail', kwargs={'pk': self.object.company.id})
