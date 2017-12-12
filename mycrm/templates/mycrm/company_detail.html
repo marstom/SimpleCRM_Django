@@ -171,6 +171,11 @@
                 e.preventDefault();
                 console.log('curr:'+currentAttrValue);
             });
+
+            /*Need to activete all tables with class table*/
+            $(document).ready(function() {
+                $('.table').DataTable();
+            } );
             
         });
 
