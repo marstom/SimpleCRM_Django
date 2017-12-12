@@ -172,12 +172,23 @@
                 console.log('curr:'+currentAttrValue);
             });
 
+
             /*Need to activete all tables with class table*/
-            $(document).ready(function() {
-                $('.table').DataTable();
-            } );
+            $('.table').DataTable();
+
+
+            //get id from button and pass it to message box
+            $('.deleteval').click( function(e){
+                var at = $(this).attr('value');
+                $('.deletebutton').val(at)
+                //console.log('click delete'+at+' '+deletebutton);
+            });
+            
+
+
             
         });
+
 
     </script>
     {% endblock %}

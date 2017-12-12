@@ -25,8 +25,8 @@
         <!-- deletebutton -->
         <div align="right">
             <!-- Button trigger modal -->
-            <button type="button" align="left" class="btn btn-danger" data-toggle="modal" data-target="#modelId">
-                Delete
+            <button type="button" align="left" class="btn btn-danger deleteval" data-toggle="modal" data-target="#modelId" value="{{comment.pk}}" >
+                Delete - {{comment.pk}}
             </button>
             
             <!-- Delete messagebox Modal -->
@@ -42,7 +42,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                             <form method="get">
-                                <button type="submit" align="left" class="btn btn-danger" name="delete_comment" value="{{comment.pk}}">Yes</button>
+                                <button type="submit" align="left" class="btn btn-danger deletebutton" name="delete_comment">Yes</button>
                             </form>
                         </div>
                     </div>
