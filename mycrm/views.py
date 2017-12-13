@@ -49,7 +49,7 @@ class UpdateViewWithMessage(UpdateView):
 
 class DeleteViewWithMessage(DeleteView):
     '''
-    Extended Update view contain field:
+    Extended Delete view contain field:
     my_message - message which displays in green bracket after succesfull delete, user must first set this field
     page_title - title that dispalys in update page header
     page_text - text display below page title in <p>page_text</p>
@@ -83,7 +83,6 @@ def logout_crm(request):
     /mycrm/logout
     '''
     logout(request)
-    # return render(request, 'logout.html')
     return redirect('mycrm:login')
 
 

@@ -28,9 +28,6 @@ except:
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-#experimental fix for pythonanywher
-# PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -44,7 +41,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 INTERNAL_IPS = ('127.0.0.1',)
 
-
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -56,7 +52,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'crispy_forms',
     'widget_tweaks', # tool for templates
-    'django_bootstrap_breadcrumbs', # Third party package for breadcrumbs
     'mycrm',
 ]
 
@@ -76,7 +71,7 @@ ROOT_URLCONF = 'SimpleCRM.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['./mycrm/templates',],
+        'DIRS': ['./templates', './mycrm/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -158,25 +153,24 @@ USE_TZ = True
 #TODO change static root
 # MEDIA_URL = ''
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, '')
+STATIC_ROOT = os.path.join(BASE_DIR, 'public')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'mycrm', 'static'),
 ]
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-    os.path.join(BASE_DIR, 'mycrm', 'templates'),
-)
-
+# TEMPLATE_DIRS = (
+#     os.path.join(BASE_DIR, 'templates'),
+#     os.path.join(BASE_DIR, 'mycrm', 'templates'),
+# )
 
 #for debug purposes
 logger.info(STATIC_URL)
 logger.info('static root {}'.format(STATIC_ROOT))
 logger.info('static file dirs {}'.format(STATICFILES_DIRS))
 logger.info('there are following templates -> \n{}'.format(TEMPLATES))
-logger.info('Template dirs are here: {}'.format(TEMPLATE_DIRS))
+# logger.info('Template dirs are here: {}'.format(TEMPLATE_DIRS))
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4' #Crispy theme
 

@@ -26,3 +26,13 @@ python manage.py runserver
 ```bash
 python manage.py createsuperuser
 ```
+
+* create local.py with content:
+
+'''
+WARNING
+do not commit this!
+'''
+SECRET_KEY = '...'
+EMAIL_PASSWORD = '...'
+EMAIL = '...'

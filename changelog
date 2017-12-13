@@ -1,15 +1,20 @@
-11.12.2017
+v0.6
+-whole page has sb-admin theme,
+-fix paths in settings.py,
+-fix, now mycrm page title redirect to home page
+-bread crumb creator now using in all create/delete views,
+-implement breadcrumb module(simble version),
+-about page have new look.
+-change icons to bootstrab fa-x,
+
+
+v0.5
 -new look, sb-admin theme,
 -detail page has count elements
 -detail page with tabs in jquery, working without page reload
-
-08.12.2017
 -logger for debug,
 -logger for user activities,
 -comments are sorted, newest at the top
-
-
-
 
 
 v0.4
@@ -19,6 +24,4 @@ v0.4
 -better looking comments page
 -there is local.py file with secret content like passwords, never commit it to repository
 
-Bugs:
--Many commits on master branch dissapear ...
 

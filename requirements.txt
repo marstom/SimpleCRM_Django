@@ -7,4 +7,3 @@ mysqlclient==1.3.12             #required for sqlite databases in django
 reportlab
 django-smtp-ssl
 django-widget-tweaks            #for add css class
-django-bootstrap-breadcrumbs    #breadcrumb django
