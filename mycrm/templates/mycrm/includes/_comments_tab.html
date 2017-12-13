@@ -1,0 +1,61 @@
+{% load staticfiles %}
+<!-- comment tab -->
+
+
+<div class="tab-pane" id="comments" role="tabpanel">
+    
+    <form class="comment-form" method="get">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="col-form-label" for="formGroupExampleInput">Title</label>
+            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Title" name="title">
+        </div>
+        <div class="form-group">
+            <label class="col-form-label" for="formGroupExampleInput2">Comment</label>
+            <textarea rows="5" type="text" class="form-control" id="formGroupExampleInput2" placeholder="Type your coment here ..." name="comm"></textarea>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Submit comment">
+    </form>
+    
+    {% for comment in comments %}
+    
+    <div class="jumbotron comment">
+        <h3>{{ comment.title }}</h3>
+        <div class="col-sm-3">{{ comment.comment }}</div> 
+        <!-- deletebutton -->
+        <div align="right">
+            <!-- Button trigger modal -->
+            <button type="button" align="left" class="btn btn-danger deleteval" data-toggle="modal" data-target="#modelId" value="{{comment.pk}}" >
+                Delete
+            </button>
+            
+            <!-- Delete messagebox Modal -->
+            <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modelTitleId">Warning!</h4>
+                        </div>
+                        <div class="modal-body">
+                            Do you really want to delete this comment?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                            <form method="get">
+                                <button type="submit" align="left" class="btn btn-danger deletebutton" name="delete_comment">Yes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+        <div align="left"> 
+            <a class="secondary">Date: {{ comment.date }}</a> 
+            <a class="secondary">User: {{ comment.user }}</a> 
+            
+        </div>
+    </div> 
+    {% endfor %}            
+</div>

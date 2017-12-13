@@ -1,47 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="{% static "img/favicon.png" %}">
-    <title>MyCRM</title>
+{% extends "base_layout.html" %}
 
-    <!-- Datatables bootstrap4 style, nice tables -->
-    <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <!-- Font awesome -->
-    <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
-    <!-- Bootstrap 4 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+{% block basecontent %}
+    {% include "_navigation.html" %}
+    <div class="content-wrapper">
 
-    <!-- SimpleCRM additional styles -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+        <!-- content - Page content -->
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
+        {% comment %} {% include "_test_content.html" %} {% endcomment %}
+        
+        <ol class="breadcrumb">
+        {% block breadcrumb %}
+        <!-- here is breadcumb view -->
+        {% endblock %}
+        </ol>
 
-    {% block header %}
-    {% endblock %}
-
-</head>
-
-
-<body>
-{% include '_navbar.html' %}
-
-<div class="container-fluid">
-    <div class="row">
-
-
-        <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
-            {% block sidebar_content %}
-            {% endblock %}
-        </nav>
-
-
-        <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
             <!-- messages -->
             <div>
                 {% for message in messages %}
@@ -53,27 +25,43 @@
                 </div>
                 {% endfor %}
             </div>
-            {% block content %}
-            {% endblock %}
-        </main>
+            <!-- end messages -->
+
+        {% block content %}
+        <!-- content - base view for html with side menus -->
+        {% endblock %}
+        
+        <!-- /.container-fluid-->
+        <!-- /.content-wrapper-->
+        <footer class="sticky-footer">
+            <div class="container">
+                <div class="text-center">
+                    <small>Copyright © Your Website 2017</small>
+                </div>
+            </div>
+        </footer>
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fa fa-angle-up"></i>
+        </a>
+        <!-- Logout Modal-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="{% url 'mycrm:logout' %}">Logout</a><!-- Logout button screen button -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
-</div>
-
-<!-- JQyery -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-        crossorigin="anonymous"></script>
-
-<!-- Datatables, using for table pagination and sorting -->
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
-
-
-</body>
-</html>
-
-
+{% endblock %}

@@ -1,4 +1,5 @@
-.idea/
+**/.idea/
+**/.vscode/
 __pycache__/
 migrations/
 bootstrap-4.0.0-beta.2/
@@ -6,4 +7,4 @@ public/
 *.pyc
 static/
 local.py
-logi-mycrm.log
+*.log

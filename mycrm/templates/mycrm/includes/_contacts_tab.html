@@ -1,0 +1,48 @@
+{% load staticfiles %}
+
+
+<!-- Table with contacts -->
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-table"></i> Contacts:</div>
+        <a class="btn btn-warning" href="{% url 'mycrm:contact_add' company.pk %}"><i class="fa fa-user-plus"></i> Add contact</a>
+        <div class="card-body">
+            <div class="table-responsive">
+                
+                
+                
+                <table class="table table-bordered" id="ta" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>contact name</th>
+                            <th>phone number</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>contact name</th>
+                            <th>phone number</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for card in company.businesscard_set.all %}
+                        <tr class="active">
+                            <td>{{ forloop.counter }}</td>
+                            <td><a class="btn btn-light" href="{% url 'mycrm:edit_contact' card.pk %}"><i
+                                class="fa fa-address-card-o" aria-hidden="true"></i></a>
+                                <a class="btn btn-primary" href="{% url 'mycrm:delete_contact' card.pk %}"
+                                role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                {{ card.name }} {{ card.last_name }} </td>
+                                <td>{{ card.phone }}</td>
+                            </tr>
+                            {% endfor %}
+                            
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+        

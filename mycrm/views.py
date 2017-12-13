@@ -6,7 +6,7 @@ mycrm all views
 from django.contrib import messages
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.edit import UpdateView, DeleteView
@@ -14,17 +14,18 @@ from django.contrib.auth import logout
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.db.models.functions import Coalesce
 
 #Import from current app
 import mycrm.models as models
 import mycrm.forms as forms
-from logger import logger
+from logger import logger, logger_user_activity
 
 #Third party libraries import
 from reportlab.pdfgen import canvas
 
 #my utilities and libraries
-from mycrm.my_utilities import queries
+from mycrm.my_utilities import queries, breadcrumb_creator
 
 
 session = SessionStore()
@@ -48,7 +49,7 @@ class UpdateViewWithMessage(UpdateView):
 
 class DeleteViewWithMessage(DeleteView):
     '''
-    Extended Update view contain field:
+    Extended Delete view contain field:
     my_message - message which displays in green bracket after succesfull delete, user must first set this field
     page_title - title that dispalys in update page header
     page_text - text display below page title in <p>page_text</p>
@@ -82,7 +83,7 @@ def logout_crm(request):
     /mycrm/logout
     '''
     logout(request)
-    return render(request, 'logout.html')
+    return redirect('mycrm:login')
 
 
 @login_required
@@ -123,7 +124,7 @@ class RegisterUser(LoginRequiredMixin, CreateViewWithMessage):
     '''
     form_class = forms.SignUpForm
     model = User #user from django
-    template_name = 'user/register_user.html'
+    template_name = 'mycrm/user_register.html'
     success_url = reverse_lazy('mycrm:user')
     my_message = 'User created succesfully!'
 
@@ -135,10 +136,20 @@ class UserEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessag
     permission_required = 'auth.change_user'
     form_class = forms.EditUserForm
     model = User
-    template_name = 'update_view.html'
+    template_name = 'mycrm/update_view.html'
     success_url = reverse_lazy('mycrm:user')
     my_message = 'Update user succesfully'
     page_title = 'Edit User:'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('Home', reverse_lazy('mycrm:home'))
+        breadcrumb.append_page('User', reverse_lazy('mycrm:user'))
+        breadcrumb.append_active_page('Edit User')
+        context['breadcrumb'] = breadcrumb.get_pages()
+        return context
+
 
 
 class UserDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMessage):
@@ -148,12 +159,19 @@ class UserDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMess
     '''
     permission_required = 'auth.delete_user'
     model = User
-    template_name = 'delete_view.html'
+    template_name = 'mycrm/delete_view.html'
     success_url = reverse_lazy('mycrm:user')
     my_message = 'You delete user succesfully!'
     page_title = 'Delete user'
-    page_text = 'Are you sure delete user?'
+    page_text = 'Are you sure delete user'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('User', reverse_lazy('mycrm:user'))
+        breadcrumb.append_active_page('Delete User')
+        context['breadcrumb'] = breadcrumb.get_pages()
+        return context
 
 class CompaniesListView(LoginRequiredMixin, ListView):
     '''
@@ -161,7 +179,7 @@ class CompaniesListView(LoginRequiredMixin, ListView):
     mycrm/company
     '''
     model = models.Company
-    template_name = 'company/company.html'
+    template_name = 'mycrm/company.html'
 
     def get_context_data(self, **kwargs):
         context = super(CompaniesListView, self).get_context_data(**kwargs)
@@ -188,10 +206,19 @@ class CompanyUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithM
     permission_required = 'mycrm.change_company'
     form_class = forms.CompanyForm
     model = models.Company
-    template_name = 'update_view.html'
+    template_name = 'mycrm/update_view.html'
     success_url = reverse_lazy('mycrm:company')
     my_message = 'You change company data succesfully!'
     page_title = 'Edit company:'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('Home', reverse_lazy('mycrm:home'))
+        breadcrumb.append_page('Company', reverse_lazy('mycrm:company'))
+        breadcrumb.append_active_page('Edit Company')
+        context['breadcrumb'] = breadcrumb.get_pages()
+        return context
 
 
 class CompanyDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMessage):
@@ -202,26 +229,46 @@ class CompanyDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithM
     permission_required = 'mycrm.delete_company'
     model = models.Company
     success_url = reverse_lazy('mycrm:company')
-    template_name = 'delete_view.html'
+    template_name = 'mycrm/delete_view.html'
     page_title = 'Delete company'
     page_text = 'Are you sure you want delete company:'
     my_message = 'You delete company succesfully!'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('Home', reverse_lazy('mycrm:home'))
+        breadcrumb.append_page('Company', reverse_lazy('mycrm:company'))
+        breadcrumb.append_active_page('Delete Company')
+        context['breadcrumb'] = breadcrumb.get_pages()
+        return context
 
 
 class CompanyDetailView(LoginRequiredMixin, DetailView):
     '''
     company detail view:
     description, contacts table, orders table
+    comments - variable ith all comments sorted by date
+    has count variables for using in template:
+    comments_count
+    contacts_count
+    order_count
     mycrm/company/<company_id>/
+
     '''
     model = models.Company
-    template_name = 'company/company_detail.html'
+    template_name = 'mycrm/company_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comments'] = models.Comment.objects.all()
-        print(kwargs)
-        print(context)
+        # context['comments'] = models.Comment.objects.all()
+        current_company = context['object']
+        nonordered_comments = current_company.comment_set.all()
+        context['comments'] = nonordered_comments.order_by(Coalesce('date', 'pk').desc())
+        context['comments_count'] = current_company.comment_set.count()
+        context['contacts_count'] = current_company.businesscard_set.count()
+        context['order_count'] = current_company.order_set.count()
+        logger.info(context['comments'])
         return context
 
     def get(self, request, *args, **kwargs):
@@ -229,10 +276,11 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
         if get and 'comm' in get and 'title' in get:
             logger.info('ADDING COMMENT ...')
             logger.info('REQEST ->   {}'.format(request))
-            logger.info('kwargs  {} user {} '.format(kwargs, request.user))
+            logger.info('kwargs  {} user {} args {}'.format(kwargs, request.user, args))
             title = request.GET['title']
             comm = request.GET['comm']
             current_company = models.Company.objects.get(pk=kwargs['pk'])
+            # current_company = self.get_context_data()['object'] #not works
             #pk mam w request current_company.comment_set - comment_set.comment - wyciągam coś z comment
             comment = models.Comment(company=current_company, user=request.user, title=title, comment=comm)
             comment.save()
@@ -241,9 +289,12 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
         if get and 'delete_comment' in get:
             logger.info('DELETING COMMENT ...')
             logger.info('comment clicked id {}'.format(get['delete_comment']))
+
             try:
                 current_comment = models.Comment.objects.get(pk=get['delete_comment'])
-                logger.info(current_comment)
+                # current_comment = models.Company.comment_set.get(pk=get['delete_comment']) #Why in didn't work??
+                logger.info(current_comment, current_comment.pk)
+                logger_user_activity.info('User {} has deleted comment {} {}.'.format(self.request.user, current_comment.title, current_comment.comment))
                 current_comment.delete()
             except:
                 logger.error('no comment with corresponding ID')
@@ -257,7 +308,7 @@ class CompanyAdd(LoginRequiredMixin, CreateViewWithMessage):
     mycrm/company/add
     '''
     form_class = forms.CompanyForm
-    template_name = 'mycrm/company_form.html'
+    template_name = 'mycrm/company_add.html'
     success_url = reverse_lazy('mycrm:company')
     my_message = 'Add Company Success!'
 
@@ -268,9 +319,23 @@ class ContactAdd(LoginRequiredMixin, CreateViewWithMessage):
     mycrm/company/addcontact
     '''
     form_class = forms.ContactAddForm
-    template_name = 'mycrm/contact_form.html'
-    success_url = reverse_lazy('mycrm:company')
+    template_name = 'mycrm/company_detail_add_contact.html'
+    # success_url = reverse_lazy('mycrm:company')
     my_message = 'Add Contact successfuly!'
+
+    def form_valid(self, form):
+        '''
+        using for set company in form
+        '''
+        form.instance.company = models.Company.objects.get(pk=self.kwargs["pk"])
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        '''
+        after add back to company page
+        '''
+        return reverse_lazy('mycrm:detail', kwargs={'pk': self.object.company.id})
+
 
 class ContactEdit(LoginRequiredMixin, UpdateViewWithMessage):
     '''
@@ -279,10 +344,25 @@ class ContactEdit(LoginRequiredMixin, UpdateViewWithMessage):
     '''
     form_class = forms.ContactAddForm
     model = models.BusinessCard
-    template_name = 'update_view.html'
-    success_url = reverse_lazy('mycrm:company')
+    template_name = 'mycrm/update_view.html'
     my_message = 'You update contact succesfully!'
     page_title = 'Edit contact:'
+
+    def get_success_url(self):
+        '''
+        after add back to company page
+        '''
+        return reverse_lazy('mycrm:detail', kwargs={'pk': self.object.company.id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('Home', reverse_lazy('mycrm:home'))
+        breadcrumb.append_page('Company', reverse_lazy('mycrm:company'))
+        breadcrumb.append_page('Detail', reverse_lazy('mycrm:detail', kwargs={'pk': self.kwargs['pk']}))
+        breadcrumb.append_active_page('Edit Contact')
+        context['breadcrumb'] = breadcrumb.get_pages()
+        return context
 
 
 class ContactDelete(LoginRequiredMixin, DeleteViewWithMessage):
@@ -291,24 +371,55 @@ class ContactDelete(LoginRequiredMixin, DeleteViewWithMessage):
     mycrm/company/<contact_id>/deletecontact
     '''
     model = models.BusinessCard
-    success_url = reverse_lazy('mycrm:company')
     my_message = 'You delete contact succesfully!'
-    template_name = 'delete_view.html'
+    template_name = 'mycrm/delete_view.html'
     page_title = 'Delete contact'
     page_text = 'Are you sure you want delete contact:'
     my_message = 'You delete contact succesfully!'
 
+    def get_success_url(self):
+        '''
+        after add back to company page
+        '''
+        return reverse_lazy('mycrm:detail', kwargs={'pk': self.object.company.id})
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('Home', reverse_lazy('mycrm:home'))
+        breadcrumb.append_page('Company', reverse_lazy('mycrm:company'))
+        breadcrumb.append_page('Detail', reverse_lazy('mycrm:detail', kwargs={'pk': self.kwargs['pk']}))
+        breadcrumb.append_active_page('Delete Contact')
+        context['breadcrumb'] = breadcrumb.get_pages()
+        return context
+
 
 class OrderAdd(LoginRequiredMixin, PermissionRequiredMixin, CreateViewWithMessage):
     '''
-    Add new contact
-    mycrm/company/addcontact
+    Add new order
+    mycrm/company/<pk>/addorder
     '''
     permission_required = 'mycrm.add_order'
     form_class = forms.OrderAddForm
-    template_name = 'mycrm/order_form.html'
-    success_url = reverse_lazy('mycrm:company')
+    template_name = 'mycrm/company_detail_add_order.html'
+    # success_url = reverse_lazy('mycrm:company')
     my_message = 'Add order succesfull!'
+    context_object_name = 'object'
+
+
+    def form_valid(self, form):
+        '''
+        using for set company in form
+        '''
+        form.instance.company = models.Company.objects.get(pk=self.kwargs["pk"])
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        '''
+        after add back to company page
+        '''
+        return reverse_lazy('mycrm:detail', kwargs={'pk': self.object.company.id})
 
 
 class OrderEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessage):
@@ -319,7 +430,23 @@ class OrderEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessa
     permission_required = 'mycrm.change_order'
     form_class = forms.OrderAddForm
     model = models.Order
-    template_name = 'update_view.html'
-    success_url = reverse_lazy('mycrm:company')
+    template_name = 'mycrm/update_view.html'
+    # success_url = reverse_lazy('mycrm:company')
     my_message = 'You update order succesfully!'
     page_title = 'Edit order:'
+
+    def get_success_url(self):
+        '''
+        after add back to company page
+        '''
+        return reverse_lazy('mycrm:detail', kwargs={'pk': self.object.company.id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('Home', reverse_lazy('mycrm:home'))
+        breadcrumb.append_page('Company', reverse_lazy('mycrm:company'))
+        breadcrumb.append_page('Detail', reverse_lazy('mycrm:detail', kwargs={'pk': self.kwargs['pk']}))
+        breadcrumb.append_active_page('Edit Order')
+        context['breadcrumb'] = breadcrumb.get_pages()
+        return context

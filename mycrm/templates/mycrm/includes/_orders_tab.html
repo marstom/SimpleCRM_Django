@@ -1,0 +1,69 @@
+{% load staticfiles %}
+
+
+<!-- Table with contacts -->
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-table"></i> Clients orders:
+    </div>
+        <a class="btn btn-success" href="{% url 'mycrm:order_add' company.pk %}"><i class="fa fa-plus"></i> Add order</a>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Value</th>
+                            <th>Payment status</th>
+                            <th>date created</th>
+                            <th>Finished</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Value</th>
+                            <th>Payment status</th>
+                            <th>date created</th>
+                            <th>Finished</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for order in company.order_set.all %}
+                        <tr class="active">
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                <a class="btn btn-primary" href="{% url 'mycrm:order_edit' order.pk %}"
+                                role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                {{ order.name }}
+                            </td>
+                            <td>{{ order.description }}</td>
+                            <td>{{ order.value }}</td>
+                            <td>
+                                {% if order.payment_status %}
+                                <i class="fa fa-check" style="font-size: 35px; color: #00a800;"></i>
+                                {% else %}
+                                <i class="fa fa-times" style="font-size: 35px; color: red;"></i>
+                                {% endif %}
+                            </td>
+                            <td>{{ order.date_created }}</td>
+                            <td>
+                                {% if order.project_is_finished %}
+                                <i class="fa fa-check" style="font-size: 35px; color: #00a800;"></i>
+                                {% else %}
+                                <i class="fa fa-times" style="font-size: 35px; color: red;"></i>
+                                {% endif %}
+                                
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
