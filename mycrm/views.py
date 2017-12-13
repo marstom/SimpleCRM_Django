@@ -25,7 +25,7 @@ from logger import logger, logger_user_activity
 from reportlab.pdfgen import canvas
 
 #my utilities and libraries
-from mycrm.my_utilities import queries
+from mycrm.my_utilities import queries, breadcrumb_creator
 
 
 session = SessionStore()
@@ -62,19 +62,17 @@ class DeleteViewWithMessage(DeleteView):
         context = super().get_context_data()
         context['page_title'] = self.page_title
         context['page_text'] = '{} {}?'.format(self.page_text, context['object'])
-        context['breadcrumb'] = self._breadcrumb_creator()
         return context
 
     #TODO implement breadcrumb
     def _breadcrumb_creator(self):
-        name = 'TestName'
-        active_name = 'Active Name'
         url = reverse_lazy('mycrm:home')
+        name_active = {'name':'Active Name', 'link':url }
         link = '<li class="breadcrumb-item"><a href="{url}">{name}</a></li>'.format(
-            name=name, url=url
+            name=name_active['name'], url=name_active['link']
         )
         active_page = '<li class="breadcrumb-item active">{name}</li>'.format(
-            name=active_name
+            name=name_active['name']
         )
 
         result = link + active_page
@@ -158,6 +156,11 @@ class UserEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessag
     my_message = 'Update user succesfully'
     page_title = 'Edit User:'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = 'XXXX'
+        return context
+
 
 class UserDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMessage):
     '''
@@ -172,6 +175,13 @@ class UserDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMess
     page_title = 'Delete user'
     page_text = 'Are you sure delete user'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('User', reverse_lazy('mycrm:user'))
+        breadcrumb.append_active_page('Delete User')
+        context['breadcrumb'] = breadcrumb.get_pages()
+        return context
 
 class CompaniesListView(LoginRequiredMixin, ListView):
     '''
