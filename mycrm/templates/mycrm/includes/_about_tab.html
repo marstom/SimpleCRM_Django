@@ -1,7 +1,7 @@
 {% load staticfiles %}
 
 
-<div class="card mb-3">
+{% comment %} <div class="card mb-3">
     
     <div class="container-fluid jumbotron">
         <div>
@@ -22,4 +22,43 @@
             <h3 class="text-center">{{ company.businesscard_set.count }}</h3>
         </div>
     </div>   
-</div>
+</div> {% endcomment %}
+
+
+  <!-- tab header -->
+  <div class="card mb-3">
+    <div class="card-header"><i class="fa fa-home h1"></i> About:</div>
+    
+    <div class="card-body graybg container-fluid">
+      
+      <!-- logo -->
+        <div class="card mylogo">
+          <div class="card-header">Company Logo:</div>
+          <div class="card-body mylogo2">
+            <img class="img rounded text-center" onerror="this.src='{% static 'img/no_image.png' %}';"
+            alt="ghf"
+            width="230"
+            src="{{ company.picture }}"/>
+         </div>
+          </div>
+
+        
+        <!-- description -->
+          <div class="card mycompany">
+            <div class="card-header">Company description:</div>
+            <div class="card-body text-justify">
+                {{ company.description }}            
+            </div>
+          </div>
+
+
+          <!-- nuber of employers -->
+          <div class="card cardEmployers">
+            <div class="card-header">Number current of employers:</div>
+            <div class="card-body mylogo2 text-justify">
+              Number of company contacts is <strong>{{ company.businesscard_set.count }}</strong>.
+            </div>
+          </div>
+        
+      </div>
+      </div>
