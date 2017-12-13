@@ -1,17 +1,29 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block breadcrumb %}
+{% block breadcrumb  %}
 
-<li class="breadcrumb-item"><a href="{% url 'mycrm:home' %}">Home</a></li>
-<li class="breadcrumb-item active">User</li>
-<li class="breadcrumb-item active">Delete</li>
+<!--<li class="breadcrumb-item"><a href="{% url 'mycrm:home' %}">Home</a></li>-->
+<!--<li class="breadcrumb-item">Users</li>-->
+<!--<li class="breadcrumb-item active">Delete</li>-->
 
+{{ breadcrumb|safe }}
+
+{% endblock %}
+
+
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+{% breadcrumb "home" "company" "/" %}
+{% breadcrumb "Users and groups" "users_and_groups_index" %}
 {% endblock %}
 
 {% block content %}
 
+
+
 <div class="container">
+    {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
         <div class="card mx-auto mt-5">
           <div class="card-header">{{ page_title }}</div>
           <div class="card-body">

@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'crispy_forms',
-    'widget_tweaks', #tool for templates
+    'widget_tweaks', # tool for templates
+    'django_bootstrap_breadcrumbs', # Third party package for breadcrumbs
     'mycrm',
 ]
 

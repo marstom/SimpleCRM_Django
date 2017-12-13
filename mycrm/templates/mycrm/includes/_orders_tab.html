@@ -45,17 +45,17 @@
                             <td>{{ order.value }}</td>
                             <td>
                                 {% if order.payment_status %}
-                                <img src="{% static 'img/ok.png' %}"/>
+                                <i class="fa fa-check" style="font-size: 35px; color: #00a800;"></i>
                                 {% else %}
-                                <img src="{% static 'img/nok.png' %}"/>
+                                <i class="fa fa-times" style="font-size: 35px; color: red;"></i>
                                 {% endif %}
                             </td>
                             <td>{{ order.date_created }}</td>
                             <td>
                                 {% if order.project_is_finished %}
-                                <img src="{% static 'img/ok.png' %}"/>
+                                <i class="fa fa-check" style="font-size: 35px; color: #00a800;"></i>
                                 {% else %}
-                                <img src="{% static 'img/nok.png' %}"/>
+                                <i class="fa fa-times" style="font-size: 35px; color: red;"></i>
                                 {% endif %}
                                 
                             </td>

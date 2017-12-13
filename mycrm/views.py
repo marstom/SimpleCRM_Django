@@ -62,7 +62,23 @@ class DeleteViewWithMessage(DeleteView):
         context = super().get_context_data()
         context['page_title'] = self.page_title
         context['page_text'] = '{} {}?'.format(self.page_text, context['object'])
+        context['breadcrumb'] = self._breadcrumb_creator()
         return context
+
+    #TODO implement breadcrumb
+    def _breadcrumb_creator(self):
+        name = 'TestName'
+        active_name = 'Active Name'
+        url = reverse_lazy('mycrm:home')
+        link = '<li class="breadcrumb-item"><a href="{url}">{name}</a></li>'.format(
+            name=name, url=url
+        )
+        active_page = '<li class="breadcrumb-item active">{name}</li>'.format(
+            name=active_name
+        )
+
+        result = link + active_page
+        return result
 
 
 class CreateViewWithMessage(CreateView):
