@@ -27,6 +27,7 @@ except:
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+logger.info('BASE_DIR is {}'.format(BASE_DIR))
 
 
 # Quick-start development settings - unsuitable for production
@@ -71,7 +72,7 @@ ROOT_URLCONF = 'SimpleCRM.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['./templates', './mycrm/templates'],
+        'DIRS': ['templates', 'mycrm/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -153,7 +154,7 @@ USE_TZ = True
 #TODO change static root
 # MEDIA_URL = ''
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'public')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
