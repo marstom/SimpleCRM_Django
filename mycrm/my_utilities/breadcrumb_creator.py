@@ -1,5 +1,5 @@
 '''
-Class using for create generic breadcrumbs
+Class using for create breadcrumbs in html
 '''
 
 class BreadcrumbCreator:
@@ -17,6 +17,10 @@ class BreadcrumbCreator:
 
 
     def get_pages(self):
+        '''
+        Create breadcrumb bar
+        :return: html, in template must be {{breadcrumb|safe}}
+        '''
         return ''.join(self.pages_list)
 
     def _breadcrumb_creator(self, name, url):

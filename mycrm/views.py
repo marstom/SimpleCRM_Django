@@ -64,20 +64,6 @@ class DeleteViewWithMessage(DeleteView):
         context['page_text'] = '{} {}?'.format(self.page_text, context['object'])
         return context
 
-    #TODO implement breadcrumb
-    def _breadcrumb_creator(self):
-        url = reverse_lazy('mycrm:home')
-        name_active = {'name':'Active Name', 'link':url }
-        link = '<li class="breadcrumb-item"><a href="{url}">{name}</a></li>'.format(
-            name=name_active['name'], url=name_active['link']
-        )
-        active_page = '<li class="breadcrumb-item active">{name}</li>'.format(
-            name=name_active['name']
-        )
-
-        result = link + active_page
-        return result
-
 
 class CreateViewWithMessage(CreateView):
     '''
@@ -158,8 +144,13 @@ class UserEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessag
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['breadcrumb'] = 'XXXX'
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('Home', reverse_lazy('mycrm:home'))
+        breadcrumb.append_page('User', reverse_lazy('mycrm:user'))
+        breadcrumb.append_active_page('Edit User')
+        context['breadcrumb'] = breadcrumb.get_pages()
         return context
+
 
 
 class UserDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMessage):
@@ -221,6 +212,15 @@ class CompanyUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithM
     my_message = 'You change company data succesfully!'
     page_title = 'Edit company:'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('Home', reverse_lazy('mycrm:home'))
+        breadcrumb.append_page('Company', reverse_lazy('mycrm:company'))
+        breadcrumb.append_active_page('Edit Company')
+        context['breadcrumb'] = breadcrumb.get_pages()
+        return context
+
 
 class CompanyDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithMessage):
     '''
@@ -234,6 +234,15 @@ class CompanyDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteViewWithM
     page_title = 'Delete company'
     page_text = 'Are you sure you want delete company:'
     my_message = 'You delete company succesfully!'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('Home', reverse_lazy('mycrm:home'))
+        breadcrumb.append_page('Company', reverse_lazy('mycrm:company'))
+        breadcrumb.append_active_page('Delete Company')
+        context['breadcrumb'] = breadcrumb.get_pages()
+        return context
 
 
 class CompanyDetailView(LoginRequiredMixin, DetailView):
@@ -346,6 +355,16 @@ class ContactEdit(LoginRequiredMixin, UpdateViewWithMessage):
         '''
         return reverse_lazy('mycrm:detail', kwargs={'pk': self.object.company.id})
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('Home', reverse_lazy('mycrm:home'))
+        breadcrumb.append_page('Company', reverse_lazy('mycrm:company'))
+        breadcrumb.append_page('Detail', reverse_lazy('mycrm:detail', kwargs={'pk': self.kwargs['pk']}))
+        breadcrumb.append_active_page('Edit Contact')
+        context['breadcrumb'] = breadcrumb.get_pages()
+        return context
+
 
 class ContactDelete(LoginRequiredMixin, DeleteViewWithMessage):
     '''
@@ -364,6 +383,17 @@ class ContactDelete(LoginRequiredMixin, DeleteViewWithMessage):
         after add back to company page
         '''
         return reverse_lazy('mycrm:detail', kwargs={'pk': self.object.company.id})
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('Home', reverse_lazy('mycrm:home'))
+        breadcrumb.append_page('Company', reverse_lazy('mycrm:company'))
+        breadcrumb.append_page('Detail', reverse_lazy('mycrm:detail', kwargs={'pk': self.kwargs['pk']}))
+        breadcrumb.append_active_page('Delete Contact')
+        context['breadcrumb'] = breadcrumb.get_pages()
+        return context
 
 
 class OrderAdd(LoginRequiredMixin, PermissionRequiredMixin, CreateViewWithMessage):
@@ -411,3 +441,13 @@ class OrderEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateViewWithMessa
         after add back to company page
         '''
         return reverse_lazy('mycrm:detail', kwargs={'pk': self.object.company.id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        breadcrumb = breadcrumb_creator.BreadcrumbCreator()
+        breadcrumb.append_page('Home', reverse_lazy('mycrm:home'))
+        breadcrumb.append_page('Company', reverse_lazy('mycrm:company'))
+        breadcrumb.append_page('Detail', reverse_lazy('mycrm:detail', kwargs={'pk': self.kwargs['pk']}))
+        breadcrumb.append_active_page('Edit Order')
+        context['breadcrumb'] = breadcrumb.get_pages()
+        return context

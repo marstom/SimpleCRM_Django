@@ -3,9 +3,11 @@
 
 {% block breadcrumb %}
 
-<li class="breadcrumb-item"><a href="{% url 'mycrm:home' %}">Home</a></li>
-<li class="breadcrumb-item">User</li>
-<li class="breadcrumb-item active">Update</li>
+<!--<li class="breadcrumb-item"><a href="{% url 'mycrm:home' %}">Home</a></li>-->
+<!--<li class="breadcrumb-item">User</li>-->
+<!--<li class="breadcrumb-item active">Update</li>-->
+
+{{ breadcrumb|safe }}
 
 {% endblock %}
 
