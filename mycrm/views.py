@@ -293,7 +293,8 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
             try:
                 current_comment = models.Comment.objects.get(pk=get['delete_comment'])
                 # current_comment = models.Company.comment_set.get(pk=get['delete_comment']) #Why in didn't work??
-                logger.info(current_comment, current_comment.pk)
+                # logger.info(current_comment, current_comment.pk)
+                # logger.info('get comment number = {}'.format(get['delete_comment']))
                 logger_user_activity.info('User {} has deleted comment {} {}.'.format(self.request.user, current_comment.title, current_comment.comment))
                 current_comment.delete()
             except:
