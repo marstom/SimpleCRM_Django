@@ -16,14 +16,6 @@ class CompanyForm(forms.ModelForm):
     '''
     Form using in CompanyUpdate and CompanyAdd views. User add new company
     '''
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        # self.helper['form_show_labels'] = False
-        self.helper.include_media = True
-
-
     class Meta:
         model = Company
         fields=['name', 'description', 'picture']

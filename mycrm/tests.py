@@ -9,6 +9,7 @@ command line:
 >pytest
 >pytest -s print all log and prints output
 >pytest -k ClassName -execute only one test
+pytest --reuse-db -not delete old db
 '''
 from decimal import Decimal
 from django.contrib.auth.models import User
@@ -158,3 +159,28 @@ class TestDetailView(TestCase):
         self.assertContains(response, 'cd-album')  # page contains cd album in orders
         self.assertContains(response, '662-334-342-341')  # page contains phone to paul Mc Cartney
         self.assertContains(response, 'Comment from beatles fan.')  # the beatles fan leaves comment!
+
+
+class TestUpdateViews(TestCase):
+    '''
+    Test if updateview works properly
+    '''
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_superuser('john', 'lennon@beatles.com', 'johnpassword')
+        self.company = Company.objects.create(name='TheBeatles', description='hahaha', picture='picture.jpg')
+
+    def test_update_company(self):
+        self.client.login(username='john', password='johnpassword')
+        form = forms.CompanyForm({
+            'name': 'RollingStones',
+            'description': 'This is great band!',
+            'picture': 'picture.jpg'
+        })
+        self.assertTrue(form.is_valid())
+        response = self.client.post(reverse('mycrm:company_edit', kwargs={'pk':self.company.pk}),data=form.data)
+        logger.info('code {}'.format(response.status_code))
+        modified_company = Company.objects.get(pk=self.company.pk)
+        logger.info('company {} {}'.format(modified_company.name, modified_company.description))
+        self.assertEqual(modified_company.name, 'RollingStones')
+        self.assertEqual(modified_company.description, 'This is great band!')
