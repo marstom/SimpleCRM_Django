@@ -16,6 +16,8 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.core.exceptions import ValidationError
 from django.test import TestCase, Client
 from .models import Company, Order
+import mycrm.forms as forms
+
 # Create your tests here.
 
 #local imports
@@ -88,3 +90,40 @@ class TestCompanyView(TestCase):
         print('printed something in pytest!!!')
         self.assertEqual(resp.status_code, 200)#success
         self.assertIs(length, 3)
+
+class TestCompanyAdd(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_superuser('john', 'lennon@beatles.com', 'johnpassword')
+        self.company = Company.objects.create(name='TheBeatles', description='hahaha')
+
+    def test_create_company_from(self):
+        self.client.login(username='john', password='johnpassword')
+        # resp = self.client.get(reverse('mycrm:company_add'))  # client is like webbrowser
+        form = forms.SignUpForm({
+            'username':'jonny',
+            'first_name':'Jonny',
+            'last_name':'Lemmons',
+            'email':'jonny@lemmon.com',
+            'password1':'yr8237r287ry29ry287ry9r8r72yr',
+            'password2':'yr8237r287ry29ry287ry9r8r72yr',
+        })
+        self.assertTrue(form.is_valid())
+
+        response = self.client.post(reverse('mycrm:company_add'), data=form.data)
+        # logger.info('user {}'.format(response.content)) #this is raw html
+        # logger.info('user {}'.format(response.context))  #
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_company_from_invalid(self):
+        self.client.login(username='john', password='johnpassword')
+        # resp = self.client.get(reverse('mycrm:company_add'))  # client is like webbrowser
+        form = forms.SignUpForm({
+            'username':'jonny',
+            'first_name':'Jonny',
+            'last_name':'Lemmons',
+            'email':'jonny@lemmon.com',
+            'password1':'aaaaaaaaaaa',
+            'password2':'bbbbbbbbbbb',
+        })
+        self.assertFalse(form.is_valid())
