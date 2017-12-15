@@ -7,3 +7,5 @@ mysqlclient==1.3.12             #required for sqlite databases in django
 reportlab
 django-smtp-ssl
 django-widget-tweaks            #for add css class
+pytest
+pytest-django                   #pytest for django, prettier test reprots

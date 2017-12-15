@@ -15,7 +15,7 @@
         <div class="card mx-auto mt-5">
           <div class="card-header">{{ page_title }}</div>
           <div class="card-body">
-                <form method="post" action="" id="id-exampleForm">
+                <form method="post" action="" id="id-exampleForm"  enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form|crispy }}
                         <input type="submit" value="Add" class="btn btn-primary"/>

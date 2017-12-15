@@ -10,7 +10,7 @@ def validate_phone(value):
     :return: None
     '''
 
-    reg = r'^[0-9,-]*$'
+    reg = r'^[0-9,-]*\d$'
     rule = re.compile(reg)
     result = rule.match(value)
     print(rule.match(value))
