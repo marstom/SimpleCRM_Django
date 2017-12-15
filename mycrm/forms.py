@@ -2,6 +2,9 @@
 Forms using in mycrm app
 '''
 #core Django imports
+from crispy_forms.bootstrap import FormActions
+from crispy_forms.helper import FormHelper, Layout
+from crispy_forms.layout import Div, HTML, Submit, BaseInput, Button, Field
 from django import forms
 import django.contrib.auth.models as auth_models
 import django.contrib.auth.forms as auth_forms
@@ -13,7 +16,14 @@ class CompanyForm(forms.ModelForm):
     '''
     Form using in CompanyUpdate and CompanyAdd views. User add new company
     '''
-    picture = forms.CharField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        # self.helper['form_show_labels'] = False
+        self.helper.include_media = True
+
+
     class Meta:
         model = Company
         fields=['name', 'description', 'picture']

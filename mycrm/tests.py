@@ -8,7 +8,7 @@ create file pytest.ini and set project settings file
 command line:
 >pytest
 >pytest -s print all log and prints output
-
+>pytest -k ClassName -execute only one test
 '''
 from decimal import Decimal
 from django.contrib.auth.models import User

@@ -1,6 +1,6 @@
 # my.cnf
 [client]
-database="mycrm"
+database="mycrm_two"
 user="tomek"
 password="kH9bya8MREXDp9rt"
 host="127.0.0.1"

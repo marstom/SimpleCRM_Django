@@ -38,7 +38,8 @@
             <img class="img rounded text-center" onerror="this.src='{% static 'img/no_image.png' %}';"
             alt="ghf"
             width="230"
-            src="{{ company.picture }}"/>
+            src="/media/{{ company.picture }}"/>
+              source={{ company.picture }}
          </div>
           </div>
 
