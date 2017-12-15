@@ -15,8 +15,8 @@ class Company(models.Model):
     '''
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=4500)
-    # picture = models.CharField(max_length=500, null=True, default=None)
-    picture = models.ImageField(upload_to="images", blank=True, null=True) #picture field change require delete whole database
+    picture = models.CharField(max_length=500, null=True, default=None)
+    # picture = models.ImageField(upload_to="images", blank=True, null=True) #picture field change require delete whole database
     ranking_position = models.IntegerField(default=0)
 
     class Meta:

@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.core.exceptions import ValidationError
 from django.test import TestCase, Client
-from .models import Company, Order
+from .models import Company, Order, BusinessCard, Comment
 import mycrm.forms as forms
 
 # Create your tests here.
@@ -127,3 +127,34 @@ class TestCompanyAdd(TestCase):
             'password2':'bbbbbbbbbbb',
         })
         self.assertFalse(form.is_valid())
+
+
+class TestDetailView(TestCase):
+    '''
+    test for detail view, test check if user add company, add order and comments if it appears on the website
+    '''
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_superuser('john', 'lennon@beatles.com', 'johnpassword')
+        self.company = Company.objects.create(name='TheBeatles', description='hahaha')
+        self.order = Order.objects.create(name='cd-album', description='Hey this is John lennon cd', company=self.company, value=Decimal('1200'), date_created='2017-11-11')
+        self.contact = BusinessCard.objects.create(name='Paul',
+                                                   last_name='McCartney',
+                                                   phone='662-334-342-341',
+                                                   company=self.company)
+        self.comment = Comment.objects.create(
+            title='Great album',
+            comment='Comment from beatles fan.',
+            user=self.user,
+            company=self.company
+        )
+
+    def test_one(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get(reverse('mycrm:detail', kwargs={'pk':self.company.pk}))
+        logger.info('{}', response.content)
+        # self.assertIn('TheBeatles',response)
+        self.assertContains(response, 'Paul') # page contains contact to paul
+        self.assertContains(response, 'cd-album')  # page contains cd album in orders
+        self.assertContains(response, '662-334-342-341')  # page contains phone to paul Mc Cartney
+        self.assertContains(response, 'Comment from beatles fan.')  # the beatles fan leaves comment!
