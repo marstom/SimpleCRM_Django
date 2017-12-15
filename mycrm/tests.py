@@ -74,8 +74,8 @@ class TestCompanyView(TestCase):
         self.client.login(username='john', password='johnpassword')
         resp = self.client.get(reverse('mycrm:company')) #client is like webbrowser
         logger.info('response {}'.format(resp.status_code))
-        logger.info('companypk {}'.format(resp.context['object_list'].get(pk=1)))
-        album = '{}'.format(resp.context['object_list'].get(pk=1).order_set.get(pk=1).description)
+        logger.info('companypk {}'.format(resp.context['object_list'].get(pk=self.company.pk)))
+        album = '{}'.format(resp.context['object_list'].get(pk=self.company.pk).order_set.get(pk=self.order.pk).description)
         logger.info(album)
         logger.info('data {}'.format(self.company.order_set.name))
         self.assertEqual(resp.status_code, 200)
