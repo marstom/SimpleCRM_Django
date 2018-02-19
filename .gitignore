@@ -9,3 +9,5 @@ static/
 local.py
 *.log
 media/
+.cache/
+

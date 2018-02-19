@@ -171,6 +171,9 @@ class TestUpdateViews(TestCase):
         self.company = Company.objects.create(name='TheBeatles', description='hahaha', picture='picture.jpg')
 
     def test_update_company(self):
+        '''
+        Test update company form and if object change after execute test
+        '''
         self.client.login(username='john', password='johnpassword')
         form = forms.CompanyForm({
             'name': 'RollingStones',
